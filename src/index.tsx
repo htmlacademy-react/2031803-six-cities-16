@@ -6,10 +6,8 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-const rentCount = 5;
-
 root.render(
   <React.StrictMode>
-    <App rentCount={rentCount}></App>
+    <App ></App>
   </React.StrictMode>
 );
