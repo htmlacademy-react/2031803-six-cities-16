@@ -12,8 +12,8 @@ import FavoritesPage from '../../pages/favorites.tsx';
 import OfferPage from '../../pages/offer.tsx';
 import Layout from '../../pages/layout.tsx';
 import Error404 from '../../pages/error404.tsx';
+import offersMocks from '../../mocks/offers.ts';
 
-const rentCount = 5;
 const isAuth = false;
 
 const router =
@@ -21,7 +21,7 @@ const router =
     createRoutesFromElements(
       <>
         <Route path="/" element={<Layout isMainPage/>}>
-          <Route index element={<MainPage rentCount={rentCount}/>}></Route>
+          <Route index element={<MainPage offers={offersMocks}/>}></Route>
         </Route>
         <Route path="/" element={<Layout/>}>
           <Route path="favorites" element={<FavoritesPage/>} loader={() => !isAuth && redirect('/login')}></Route>

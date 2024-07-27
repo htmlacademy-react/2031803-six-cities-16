@@ -1,6 +1,15 @@
 import dayjs from 'dayjs';
 
-const reviews = [
+export interface Review {
+  id: number;
+  avatar: string;
+  name: string;
+  rating: number;
+  date: string;
+  text: string;
+}
+
+const reviews: Review[] = [
   {
     id: 1,
     avatar: `https://loremflickr.com/248/152?random=${Math.random() * 100}`,

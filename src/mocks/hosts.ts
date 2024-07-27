@@ -1,4 +1,11 @@
-const hosts = [
+export interface Host {
+  id: number;
+  avatar: string;
+  name: string;
+  isPro: boolean;
+}
+
+const hosts: Host[] = [
   {
     id: 1,
     avatar: `https://loremflickr.com/248/152?random=${ Math.random() * 100}`,
