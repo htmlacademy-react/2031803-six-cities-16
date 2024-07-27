@@ -1,18 +1,18 @@
 import React from 'react';
-import { Offer } from '../../mocks/offers.ts';
+import { Offer } from '../../mocks/types.ts';
 
 interface CardProps {
   offer: Offer;
 }
 
 const Card = ({ offer }: CardProps): React.JSX.Element => {
-  const { isPremium, photos, price, title, type, isFavorite, rating } = offer;
+  const { isPremium, images, price, title, type, isFavorite, rating } = offer;
   return (
     <>
       {isPremium ? <div className="place-card__mark"><span>Premium</span></div> : null}
       <div className="cities__image-wrapper place-card__image-wrapper">
         <a href="#">
-          <img className="place-card__image" src={photos[0]} width="260" height="200" alt="Place image"/>
+          <img className="place-card__image" src={images[0]} width="260" height="200" alt="Place image"/>
         </a>
       </div>
       <div className="place-card__info">

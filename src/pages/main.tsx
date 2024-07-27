@@ -1,6 +1,6 @@
 import React from 'react';
 import CardList from '../components/card-list/card-list.tsx';
-import {Offer} from '../mocks/offers.ts';
+import {Offer} from '../mocks/types.ts';
 interface MainPageProps {
   offers: Offer[];
 }

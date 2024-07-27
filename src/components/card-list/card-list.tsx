@@ -1,5 +1,5 @@
 import React from 'react';
-import {Offer} from '../../mocks/offers.ts';
+import {Offer} from '../../mocks/types.ts';
 import {v4 as uuidv4} from 'uuid';
 import Card from '../card/card.tsx';
 
