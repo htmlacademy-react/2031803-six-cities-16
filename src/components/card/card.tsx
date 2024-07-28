@@ -1,5 +1,6 @@
 import React from 'react';
 import { Offer } from '../../mocks/types.ts';
+import {Link} from 'react-router-dom';
 
 interface CardProps {
   offer: Offer;
@@ -7,17 +8,17 @@ interface CardProps {
 }
 
 const Card = ({ offer, isFavoritesPage = false }: CardProps): React.JSX.Element => {
-  const { isPremium, images, price, title, type, isFavorite, rating } = offer;
+  const { isPremium, images, price, title, type, isFavorite, rating, id } = offer;
   return (
     <article className={`${isFavoritesPage ? 'favorites' : 'cities'}__card place-card`}>
       {isPremium ? <div className="place-card__mark"><span>Premium</span></div> : null}
       <div className={`${isFavoritesPage ? 'favorites' : 'cities'}__image-wrapper place-card__image-wrapper`}>
-        <a href="#">
+        <Link to={`/offer/${id}`}>
           {isFavoritesPage ?
             <img className="place-card__image" src={images[0]} width="150" height="110" alt="Place image"/>
             :
             <img className="place-card__image" src={images[0]} width="260" height="200" alt="Place image"/>}
-        </a>
+        </Link>
       </div>
       <div className={`${isFavoritesPage ? 'favorites__card-info' : ''} place-card__info`}>
         <div className="place-card__price-wrapper">
@@ -49,7 +50,7 @@ const Card = ({ offer, isFavoritesPage = false }: CardProps): React.JSX.Element 
           </div>
         </div>
         <h2 className="place-card__name">
-          <a href="#">{title}</a>
+          <Link to={`/offer/${id}`}>{title}</Link>
         </h2>
         <p className="place-card__type">{type}</p>
       </div>

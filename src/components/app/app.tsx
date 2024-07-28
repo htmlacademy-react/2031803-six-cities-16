@@ -1,42 +1,22 @@
-import React from 'react';
-import MainPage from '../../pages/main.tsx';
+import React, {useState} from 'react';
 import {
-  createBrowserRouter,
-  createRoutesFromElements,
-  redirect,
-  Route,
-  RouterProvider,
+  Outlet,
 } from 'react-router-dom';
-import LoginPage from '../../pages/login.tsx';
-import FavoritesPage from '../../pages/favorites.tsx';
-import OfferPage from '../../pages/offer.tsx';
-import Layout from '../../pages/layout.tsx';
-import Error404 from '../../pages/error404.tsx';
+import {AuthStatus} from './types.ts';
+import {Offer} from '../../mocks/types.ts';
 import offersMocks from '../../mocks/offers.ts';
+import { Context } from './types.ts';
 
-const isAuth = true;
+export const AppContext = React.createContext<Context>({ authStatus: AuthStatus.NoAuth, offers: [] });
 
-const router =
-  createBrowserRouter(
-    createRoutesFromElements(
-      <>
-        <Route path="/" element={<Layout isMainPage isAuth/>}>
-          <Route index element={<MainPage offers={offersMocks}/>}></Route>
-        </Route>
-        <Route path="/" element={<Layout isAuth/>}>
-          <Route path="favorites" element={<FavoritesPage offers={offersMocks}/>} loader={() => !isAuth && redirect('/login')}></Route>
-          <Route path="offer/:id" element={<OfferPage/>}></Route>
-          <Route path="*" element={<Error404/>}></Route>
-        </Route>
-        <Route path="/" element={<Layout isLoginPage isAuth/>}>
-          <Route path="/login" element={<LoginPage/>} loader={() => isAuth && redirect('/')}></Route>
-        </Route>
-      </>
-    )
+const App = (): React.JSX.Element => {
+  const [authStatus] = useState<AuthStatus>(AuthStatus.Auth);
+  const [offers] = useState<Offer[]>(offersMocks);
+  return (
+    <AppContext.Provider value={{ authStatus, offers }}>
+      <Outlet/>
+    </AppContext.Provider>
   );
-
-const App = (): React.JSX.Element => (
-  <RouterProvider router={router} />
-);
+};
 
 export default App;
