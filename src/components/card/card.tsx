@@ -3,19 +3,23 @@ import { Offer } from '../../mocks/types.ts';
 
 interface CardProps {
   offer: Offer;
+  isFavoritesPage?: boolean;
 }
 
-const Card = ({ offer }: CardProps): React.JSX.Element => {
+const Card = ({ offer, isFavoritesPage = false }: CardProps): React.JSX.Element => {
   const { isPremium, images, price, title, type, isFavorite, rating } = offer;
   return (
-    <>
+    <article className={`${isFavoritesPage ? 'favorites' : 'cities'}__card place-card`}>
       {isPremium ? <div className="place-card__mark"><span>Premium</span></div> : null}
-      <div className="cities__image-wrapper place-card__image-wrapper">
+      <div className={`${isFavoritesPage ? 'favorites' : 'cities'}__image-wrapper place-card__image-wrapper`}>
         <a href="#">
-          <img className="place-card__image" src={images[0]} width="260" height="200" alt="Place image"/>
+          {isFavoritesPage ?
+            <img className="place-card__image" src={images[0]} width="150" height="110" alt="Place image"/>
+            :
+            <img className="place-card__image" src={images[0]} width="260" height="200" alt="Place image"/>}
         </a>
       </div>
-      <div className="place-card__info">
+      <div className={`${isFavoritesPage ? 'favorites__card-info' : ''} place-card__info`}>
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
             <b className="place-card__price-value">&euro;{price}</b>
@@ -49,7 +53,7 @@ const Card = ({ offer }: CardProps): React.JSX.Element => {
         </h2>
         <p className="place-card__type">{type}</p>
       </div>
-    </>
+    </article>
   );
 };
 

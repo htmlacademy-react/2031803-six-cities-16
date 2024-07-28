@@ -11,8 +11,8 @@ const CardList = ({ offers }: CardListProps): React.JSX.Element => (
   <div className="cities__places-list places__list tabs__content">
     {
       offers?.map((offer) => (
-        <article className="cities__card place-card" key={uuidv4()}><Card offer={offer}></Card>
-        </article>))
+        <Card offer={offer} key={uuidv4()}/>
+      ))
     }
   </div>
 );

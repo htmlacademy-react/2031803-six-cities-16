@@ -14,21 +14,21 @@ import Layout from '../../pages/layout.tsx';
 import Error404 from '../../pages/error404.tsx';
 import offersMocks from '../../mocks/offers.ts';
 
-const isAuth = false;
+const isAuth = true;
 
 const router =
   createBrowserRouter(
     createRoutesFromElements(
       <>
-        <Route path="/" element={<Layout isMainPage/>}>
+        <Route path="/" element={<Layout isMainPage isAuth/>}>
           <Route index element={<MainPage offers={offersMocks}/>}></Route>
         </Route>
-        <Route path="/" element={<Layout/>}>
-          <Route path="favorites" element={<FavoritesPage/>} loader={() => !isAuth && redirect('/login')}></Route>
+        <Route path="/" element={<Layout isAuth/>}>
+          <Route path="favorites" element={<FavoritesPage offers={offersMocks}/>} loader={() => !isAuth && redirect('/login')}></Route>
           <Route path="offer/:id" element={<OfferPage/>}></Route>
           <Route path="*" element={<Error404/>}></Route>
         </Route>
-        <Route path="/" element={<Layout isLoginPage/>}>
+        <Route path="/" element={<Layout isLoginPage isAuth/>}>
           <Route path="/login" element={<LoginPage/>} loader={() => isAuth && redirect('/')}></Route>
         </Route>
       </>
