@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import {Link} from 'react-router-dom';
-import {AuthStatus} from '../app/types.ts';
+import {AppRoute, AuthStatus} from '../app/types.ts';
 import {AppContext} from '../app/app.tsx';
 
 interface HeaderProps {
@@ -8,7 +8,7 @@ interface HeaderProps {
 }
 
 const Header = ({isLoginPage}: HeaderProps): React.JSX.Element => {
-  const { authStatus } = useContext(AppContext);
+  const { authStatus, offers } = useContext(AppContext);
   return (
     <header className="header">
       <div className="container">
@@ -24,12 +24,12 @@ const Header = ({isLoginPage}: HeaderProps): React.JSX.Element => {
               {authStatus === AuthStatus.Auth ?
                 <>
                   <li className="header__nav-item user">
-                    <a className="header__nav-link header__nav-link--profile" href="#">
+                    <Link className="header__nav-link header__nav-link--profile" to={AppRoute.Favorites}>
                       <div className="header__avatar-wrapper user__avatar-wrapper">
                       </div>
                       <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                      <span className="header__favorite-count">3</span>
-                    </a>
+                      <span className="header__favorite-count">{offers?.filter((offer) => offer.isFavorite).length}</span>
+                    </Link>
                   </li>
                   <li className="header__nav-item">
                     <a className="header__nav-link" href="#">

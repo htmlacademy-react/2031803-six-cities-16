@@ -1,8 +1,8 @@
 export enum HousingType {
-  Apartment = 'apartment',
-  Room = 'room',
-  House = 'house',
-  Hotel = 'hotel'
+  Apartment = 'Apartment',
+  Room = 'Room',
+  House = 'House',
+  Hotel = 'Hotel'
 }
 
 export interface Host {
@@ -50,4 +50,8 @@ export interface Review {
   user: User;
   comment: string;
   rating: number;
+}
+
+export interface Reviews {
+  [offerId: string]: Review[];
 }

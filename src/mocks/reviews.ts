@@ -1,11 +1,7 @@
 import dayjs from 'dayjs';
-import {Review} from './types.ts';
+import { Reviews} from './types.ts';
 
-interface Reviews {
-  [offerId: string]: Review[];
-}
-
-const reviews: Reviews = {
+export const reviews: Reviews = {
   '1': [
     {
       id: 1,
@@ -16,7 +12,7 @@ const reviews: Reviews = {
       },
       rating: 5,
       date: dayjs().format('MMMM YYYY'),
-      comment: 'Lorem ipsum Lorem ipsum Lorem ipsum',
+      comment: 'Lorem ipsum Lorem ipsum Lorem ipsumLorem ipsum Lorem ipsum Lorem ipsumLorem ipsum Lorem ipsum Lorem ipsumLorem ipsum Lorem ipsum Lorem ipsumLorem ipsum Lorem ipsum Lorem ipsumLorem ipsum Lorem ipsum Lorem ipsumLorem ipsum Lorem ipsum Lorem ipsum',
     },
     {
       id: 2,

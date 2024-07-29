@@ -7,13 +7,22 @@ import {Offer} from '../../mocks/types.ts';
 import offersMocks from '../../mocks/offers.ts';
 import { Context } from './types.ts';
 
-export const AppContext = React.createContext<Context>({ authStatus: AuthStatus.NoAuth, offers: [] });
+export const AppContext = React.createContext<Context>({ authStatus: AuthStatus.NoAuth, offers: [], handleFavorite: () => undefined } as Context);
 
 const App = (): React.JSX.Element => {
   const [authStatus] = useState<AuthStatus>(AuthStatus.Auth);
-  const [offers] = useState<Offer[]>(offersMocks);
+  const [offers, setOffers] = useState<Offer[]>(offersMocks);
+
+  const handleFavorite = (offerID: string): void => {
+    const index = offers.findIndex((offer) => offer.id === offerID);
+    if (index !== -1) {
+      const updatedOffers = [...offers];
+      updatedOffers[index].isFavorite = !updatedOffers[index].isFavorite;
+      setOffers(updatedOffers);
+    }
+  };
   return (
-    <AppContext.Provider value={{ authStatus, offers }}>
+    <AppContext.Provider value={{ authStatus, offers, handleFavorite }}>
       <Outlet/>
     </AppContext.Provider>
   );
