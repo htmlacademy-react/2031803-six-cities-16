@@ -8,15 +8,15 @@ interface CardListProps {
 
 const CardList = ({ offers }: CardListProps): React.JSX.Element => {
   const [, setActiveCardID] = useState<string | null>(null);
-  const handleCardHover = (id: string | null): void => {
-    setActiveCardID(id);
+  const handleActiveCardChoice = (id?: string): void => {
+    setActiveCardID(id ?? null);
   };
 
   return (
     <div className="cities__places-list places__list tabs__content">
       {
         offers?.map((offer) => (
-          <Card offer={offer} handleCardHover={handleCardHover} key={offer.id}/>
+          <Card offer={offer} handleActiveCardChoice={handleActiveCardChoice} key={offer.id}/>
         ))
       }
     </div>

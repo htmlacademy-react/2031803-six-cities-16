@@ -5,15 +5,15 @@ import {Link} from 'react-router-dom';
 interface CardProps {
   offer: Offer;
   isFavoritesPage?: boolean;
-  handleCardHover?: (id: string | null) => void;
+  handleActiveCardChoice?: (id?: string) => void;
 }
 
-const Card = ({ offer, isFavoritesPage = false, handleCardHover }: CardProps): React.JSX.Element => {
+const Card = ({ offer, isFavoritesPage = false, handleActiveCardChoice }: CardProps): React.JSX.Element => {
   const { isPremium, images, price, title, type, isFavorite, rating, id } = offer;
   return (
     <article className={`${isFavoritesPage ? 'favorites' : 'cities'}__card place-card`}
-      onMouseOver={() => handleCardHover ? handleCardHover(id) : null}
-      onMouseLeave={() => handleCardHover ? handleCardHover(null) : null}
+      onMouseOver={() => handleActiveCardChoice ? handleActiveCardChoice(id) : null}
+      onMouseLeave={() => handleActiveCardChoice ? handleActiveCardChoice() : null}
     >
       {isPremium ? <div className="place-card__mark"><span>Premium</span></div> : null}
       <div className={`${isFavoritesPage ? 'favorites' : 'cities'}__image-wrapper place-card__image-wrapper`}>
