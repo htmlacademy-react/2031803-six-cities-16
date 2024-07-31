@@ -1,42 +1,31 @@
-import React from 'react';
-import MainPage from '../../pages/main.tsx';
+import React, {useState} from 'react';
 import {
-  createBrowserRouter,
-  createRoutesFromElements,
-  redirect,
-  Route,
-  RouterProvider,
+  Outlet,
 } from 'react-router-dom';
-import LoginPage from '../../pages/login.tsx';
-import FavoritesPage from '../../pages/favorites.tsx';
-import OfferPage from '../../pages/offer.tsx';
-import Layout from '../../pages/layout.tsx';
-import Error404 from '../../pages/error404.tsx';
+import {AuthStatus} from './types.ts';
+import {OfferMock} from '../../mocks/types.ts';
+import offersMocks from '../../mocks/offers.ts';
+import { Context } from './types.ts';
 
-const rentCount = 5;
-const isAuth = false;
+export const AppContext = React.createContext<Context>({ authStatus: AuthStatus.NoAuth, offers: [], handleFavorite: () => undefined } as Context);
 
-const router =
-  createBrowserRouter(
-    createRoutesFromElements(
-      <>
-        <Route path="/" element={<Layout isMainPage/>}>
-          <Route index element={<MainPage rentCount={rentCount}/>}></Route>
-        </Route>
-        <Route path="/" element={<Layout/>}>
-          <Route path="favorites" element={<FavoritesPage/>} loader={() => !isAuth && redirect('/login')}></Route>
-          <Route path="offer/:id" element={<OfferPage/>}></Route>
-          <Route path="*" element={<Error404/>}></Route>
-        </Route>
-        <Route path="/" element={<Layout isLoginPage/>}>
-          <Route path="/login" element={<LoginPage/>} loader={() => isAuth && redirect('/')}></Route>
-        </Route>
-      </>
-    )
+const App = (): React.JSX.Element => {
+  const [authStatus] = useState<AuthStatus>(AuthStatus.Auth);
+  const [offers, setOffers] = useState<OfferMock[]>(offersMocks);
+
+  const handleFavorite = (offerID: string): void => {
+    const index = offers.findIndex((offer) => offer.id === offerID);
+    if (index !== -1) {
+      const updatedOffers = [...offers];
+      updatedOffers[index].isFavorite = !updatedOffers[index].isFavorite;
+      setOffers(updatedOffers);
+    }
+  };
+  return (
+    <AppContext.Provider value={{ authStatus, offers, handleFavorite }}>
+      <Outlet/>
+    </AppContext.Provider>
   );
-
-const App = (): React.JSX.Element => (
-  <RouterProvider router={router} />
-);
+};
 
 export default App;
