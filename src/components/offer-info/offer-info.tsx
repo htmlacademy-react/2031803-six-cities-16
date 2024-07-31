@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import {AppContext} from '../app/app.tsx';
-import { Offer } from '../../mocks/types.ts';
+import { OfferMock } from '../../mocks/types.ts';
 import {v4 as uuidv4} from 'uuid';
 import OfferHost from './offer-host.tsx';
 import OfferReviewsList from './offer-reviews-list.tsx';
@@ -11,7 +11,7 @@ interface OfferInfoProps {
 
 const OfferInfo = ({ offerID }: OfferInfoProps): React.JSX.Element => {
   const { offers, handleFavorite } = useContext(AppContext);
-  const currentOffer = offers?.find((offer) => offer.id === offerID) as Offer;
+  const currentOffer = offers?.find((offer: OfferMock) => offer.id === offerID) as OfferMock;
   const { isPremium, isFavorite, images, price, title, type, rating,
     bedrooms, maxAdults, host, description, goods } = currentOffer;
   return (

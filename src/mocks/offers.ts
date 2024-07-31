@@ -1,6 +1,6 @@
-import {HousingType, Offer} from './types.ts';
+import {HousingType, OfferMock} from './types.ts';
 
-const offers: Offer[] = [
+const offers: OfferMock[] = [
   {
     id: '1',
     images: Array(10).fill(`https://loremflickr.com/248/152?random=${Math.random() * 100}`) as string[],
@@ -23,6 +23,7 @@ const offers: Offer[] = [
     type: HousingType.Apartment,
     isFavorite: true,
     rating: 4.2,
+    previewImage: `https://loremflickr.com/248/152?random=${Math.random() * 100}`,
     bedrooms: 3,
     maxAdults: 6,
     goods: ['Wifi', 'Heating', 'Kitchen', 'Cable', 'TV'],
@@ -55,6 +56,7 @@ const offers: Offer[] = [
     type: HousingType.Hotel,
     isFavorite: true,
     rating: 4.5,
+    previewImage: `https://loremflickr.com/248/152?random=${Math.random() * 100}`,
     bedrooms: 2,
     maxAdults: 4,
     goods: ['Wifi', 'Heating', 'Kitchen', 'Cable', 'TV'],
@@ -87,6 +89,7 @@ const offers: Offer[] = [
     type: HousingType.Room,
     isFavorite: false,
     rating: 3.5,
+    previewImage: `https://loremflickr.com/248/152?random=${Math.random() * 100}`,
     bedrooms: 1,
     maxAdults: 2,
     goods: ['Wifi', 'Heating'],
@@ -119,6 +122,7 @@ const offers: Offer[] = [
     type: HousingType.House,
     isFavorite: true,
     rating: 4.8,
+    previewImage: `https://loremflickr.com/248/152?random=${Math.random() * 100}`,
     bedrooms: 4,
     maxAdults: 8,
     goods: ['Wifi', 'Heating', 'Kitchen', 'Cable', 'TV'],

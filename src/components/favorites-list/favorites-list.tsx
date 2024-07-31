@@ -1,14 +1,14 @@
 import React from 'react';
-import {Offer} from '../../mocks/types.ts';
+import {OfferMock} from '../../mocks/types.ts';
 import {v4 as uuidv4} from 'uuid';
 import Card from '../card/card.tsx';
 
 interface FavoritesListProps {
-  offers: Offer[];
+  offers: OfferMock[];
 }
 
 const FavoritesList = ({ offers }: FavoritesListProps): React.JSX.Element => {
-  const cities = Array.from(new Set(offers.map((offer: Offer) => offer.city?.name)));
+  const cities = Array.from(new Set(offers.map((offer: OfferMock) => offer.city?.name)));
   return (
     <ul className="favorites__list">
       {

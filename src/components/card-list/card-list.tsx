@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-import {Offer} from '../../mocks/types.ts';
+import {OfferMock} from '../../mocks/types.ts';
 import Card from '../card/card.tsx';
 
 interface CardListProps {
-  offers: Offer[];
+  offers: OfferMock[];
 }
 
 const CardList = ({ offers }: CardListProps): React.JSX.Element => {

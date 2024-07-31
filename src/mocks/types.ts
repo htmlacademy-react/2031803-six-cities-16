@@ -17,7 +17,7 @@ export interface Location {
   zoom: number;
 }
 
-export interface Offer {
+export interface OfferMain {
   id: string;
   title: string;
   type: HousingType;
@@ -30,13 +30,23 @@ export interface Offer {
   isFavorite: boolean;
   isPremium: boolean;
   rating: number;
+  previewImage: string;
+}
+
+type OfferDetails = Omit<OfferMain, 'previewImage'> & {
   description: string;
   bedrooms: number;
   goods: string[];
-  host: Host;
+  host: {
+    name: string;
+    avatarUrl: string;
+    isPro: boolean;
+  };
   images: string[];
   maxAdults: number;
-}
+};
+
+export type OfferMock = OfferMain & OfferDetails;
 
 export interface User {
   name: string;

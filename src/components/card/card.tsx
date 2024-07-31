@@ -1,15 +1,15 @@
 import React from 'react';
-import { Offer } from '../../mocks/types.ts';
+import { OfferMock } from '../../mocks/types.ts';
 import {Link} from 'react-router-dom';
 
 interface CardProps {
-  offer: Offer;
+  offer: OfferMock;
   isFavoritesPage?: boolean;
   handleActiveCardChoice?: (id?: string) => void;
 }
 
 const Card = ({ offer, isFavoritesPage = false, handleActiveCardChoice }: CardProps): React.JSX.Element => {
-  const { isPremium, images, price, title, type, isFavorite, rating, id } = offer;
+  const { isPremium, previewImage, price, title, type, isFavorite, rating, id } = offer;
   return (
     <article className={`${isFavoritesPage ? 'favorites' : 'cities'}__card place-card`}
       onMouseOver={() => handleActiveCardChoice ? handleActiveCardChoice(id) : null}
@@ -19,9 +19,9 @@ const Card = ({ offer, isFavoritesPage = false, handleActiveCardChoice }: CardPr
       <div className={`${isFavoritesPage ? 'favorites' : 'cities'}__image-wrapper place-card__image-wrapper`}>
         <Link to={`/offer/${id}`}>
           {isFavoritesPage ?
-            <img className="place-card__image" src={images[0]} width="150" height="110" alt="Place image"/>
+            <img className="place-card__image" src={previewImage} width="150" height="110" alt="Place image"/>
             :
-            <img className="place-card__image" src={images[0]} width="260" height="200" alt="Place image"/>}
+            <img className="place-card__image" src={previewImage} width="260" height="200" alt="Place image"/>}
         </Link>
       </div>
       <div className={`${isFavoritesPage ? 'favorites__card-info' : ''} place-card__info`}>
