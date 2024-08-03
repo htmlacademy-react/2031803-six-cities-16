@@ -17,15 +17,17 @@ export interface Location {
   zoom: number;
 }
 
+export interface City {
+  name: string;
+  location: Location;
+}
+
 export interface OfferMain {
   id: string;
   title: string;
   type: HousingType;
   price: number;
-  city: {
-    name: string;
-    location: Location;
-  };
+  city: City;
   location: Location;
   isFavorite: boolean;
   isPremium: boolean;

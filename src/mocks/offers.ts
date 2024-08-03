@@ -106,7 +106,7 @@ const offers: OfferMock[] = [
     isPremium: true,
     price: Math.floor((Math.random() * 500)),
     city: {
-      name: 'Cologne',
+      name: 'Amsterdam',
       location: {
         latitude: 52.3809553943508,
         longitude: 4.939309666406198,
