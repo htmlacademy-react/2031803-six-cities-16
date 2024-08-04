@@ -4,6 +4,7 @@ import { OfferMock } from '../../mocks/types.ts';
 import {v4 as uuidv4} from 'uuid';
 import OfferHost from './offer-host.tsx';
 import OfferReviewsList from './offer-reviews-list.tsx';
+import Map from '../map/map.tsx';
 
 interface OfferInfoProps {
   offerID: string;
@@ -14,6 +15,7 @@ const OfferInfo = ({ offerID }: OfferInfoProps): React.JSX.Element => {
   const currentOffer = offers?.find((offer: OfferMock) => offer.id === offerID) as OfferMock;
   const { isPremium, isFavorite, images, price, title, type, rating,
     bedrooms, maxAdults, host, description, goods } = currentOffer;
+  const offersNearby = offers.filter((offer) => offer.city.name === currentOffer.city.name && offer.id !== currentOffer.id).slice(0, 3);
   return (
     <section className="offer">
       <div className="offer__gallery-container container">
@@ -89,7 +91,7 @@ const OfferInfo = ({ offerID }: OfferInfoProps): React.JSX.Element => {
           <OfferReviewsList offerID={offerID}/>
         </div>
       </div>
-      <section className="offer__map map"></section>
+      <Map cityOffers={offersNearby} className={'offer'}></Map>
     </section>
   );
 };
