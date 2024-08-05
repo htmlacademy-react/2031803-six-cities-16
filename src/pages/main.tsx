@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import CardList from '../components/card-list/card-list.tsx';
 import {AppContext} from '../components/app/app.tsx';
 import Map from '../components/map/map.tsx';
@@ -12,10 +12,6 @@ const MainPage = (): React.JSX.Element => {
   const [activeCity, setActiveCity] = useState('Amsterdam');
   const [cityOffers, setCityOffers] = useState<OfferMock[]>(offers.filter((offer) => offer.city.name === activeCity));
 
-  useEffect(() => {
-    setCityOffers(offers.filter((offer) => offer.city.name === activeCity));
-  },[offers, activeCity]);
-
   return (
     <main className="page__main page__main--index">
       <h1 className="visually-hidden">Cities</h1>
@@ -25,7 +21,10 @@ const MainPage = (): React.JSX.Element => {
             {CITIES.map((city) => (
               <li className="locations__item" key={uuidv4()}>
                 <a className={`locations__item-link tabs__item ${city === activeCity ? 'tabs__item--active' : ''}`}
-                  onClick={() => setActiveCity(city)}
+                  onClick={() => {
+                    setActiveCity(city);
+                    setCityOffers(offers.filter((offer) => offer.city.name === city));
+                  }}
                 >
                   <span>{city}</span>
                 </a>
