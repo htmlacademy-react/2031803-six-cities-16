@@ -5,7 +5,7 @@ import Map from '../components/map/map.tsx';
 import {OfferMock} from '../mocks/types.ts';
 import {v4 as uuidv4} from 'uuid';
 
-const cities = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
+const CITIES = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
 
 const MainPage = (): React.JSX.Element => {
   const { offers } = useContext(AppContext);
@@ -22,7 +22,7 @@ const MainPage = (): React.JSX.Element => {
       <div className="tabs">
         <section className="locations container">
           <ul className="locations__list tabs__list">
-            {cities.map((city) => (
+            {CITIES.map((city) => (
               <li className="locations__item" key={uuidv4()}>
                 <a className={`locations__item-link tabs__item ${city === activeCity ? 'tabs__item--active' : ''}`}
                   onClick={() => setActiveCity(city)}

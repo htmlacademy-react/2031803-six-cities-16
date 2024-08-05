@@ -1,6 +1,8 @@
 import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
 import {v4 as uuidv4} from 'uuid';
 
+const grades = ['perfect', 'good', 'not bad', 'badly', 'terribly'];
+
 const OfferForm = (): React.JSX.Element => {
   const [textInput, setTextInput] = useState('');
   const [textInputError, setTextInputError] = useState('The review text must contain from 50 to 300 characters.');
@@ -44,8 +46,6 @@ const OfferForm = (): React.JSX.Element => {
       setIsFormValid(true);
     }
   }, [textInputError, ratingError]);
-
-  const grades = ['perfect', 'good', 'not bad', 'badly', 'terribly'];
 
   return (
     <form className="reviews__form form" action="#" method="post" onSubmit={submitHandler} onBlur={blurHandler}>
