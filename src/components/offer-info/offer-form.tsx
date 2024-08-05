@@ -1,36 +1,52 @@
 import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
 import {v4 as uuidv4} from 'uuid';
 
+enum ErrorMessage {
+  Review = 'The review text must contain from 50 to 300 characters.',
+  Rating = 'The rating must be chosen',
+  NoError = ''
+}
+
+interface OfferFormData {
+  review: string;
+  rating: null | number;
+}
+
+interface OfferErrorData {
+  review: ErrorMessage.Review | ErrorMessage.NoError;
+  rating: ErrorMessage.Rating | ErrorMessage.NoError;
+}
+
+const grades = ['perfect', 'good', 'not bad', 'badly', 'terribly'];
+
 const OfferForm = (): React.JSX.Element => {
-  const [textInput, setTextInput] = useState('');
-  const [textInputError, setTextInputError] = useState('The review text must contain from 50 to 300 characters.');
-  const [rating, setRating] = useState<number | null>(null);
-  const [ratingError, setRatingError] = useState('The rating must be chosen');
+  const [formData, setFormData] = useState<OfferFormData>({review: '', rating: null});
+  const [errorData, setErrorData] = useState<OfferErrorData>({review: ErrorMessage.Review, rating: ErrorMessage.Rating});
   const [isErrorDisplayed, setIsErrorDisplayed] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
 
   const textInputHandler = (evt: ChangeEvent<HTMLTextAreaElement>): void => {
     const input = evt.target.value;
-    setTextInput(input);
+    setFormData({...formData, review: input});
 
     if (input.length < 50 || input.length > 300) {
-      setTextInputError('The review text must contain from 50 to 300 characters.');
+      setErrorData({...errorData, review: ErrorMessage.Review});
     } else {
-      setTextInputError('');
+      setErrorData({...errorData, review: ErrorMessage.NoError});
     }
   };
 
   const ratingHandler = (evt: ChangeEvent<HTMLInputElement>): void => {
-    setRating(Number(evt.target.value));
-    setRatingError('');
+    setFormData({...formData, rating: Number(evt.target.value)});
+    setErrorData({...errorData, rating: ErrorMessage.NoError});
   };
 
   const submitHandler = (evt: FormEvent<HTMLFormElement>): void => {
     evt.preventDefault();
-    setTextInput('');
-    setTextInputError('The review text must contain from 50 to 300 characters.');
-    setRating(null);
-    setRatingError(('The rating must be chosen'));
+    setFormData({...formData, review: ''});
+    setErrorData({...errorData, review: ErrorMessage.Review});
+    setFormData({...formData, rating: null});
+    setErrorData({...errorData, rating: ErrorMessage.Rating});
   };
 
   const blurHandler = (): void => {
@@ -38,14 +54,12 @@ const OfferForm = (): React.JSX.Element => {
   };
 
   useEffect(() => {
-    if (textInputError || ratingError) {
+    if (errorData.review || errorData.rating) {
       setIsFormValid(false);
     } else {
       setIsFormValid(true);
     }
-  }, [textInputError, ratingError]);
-
-  const grades = ['perfect', 'good', 'not bad', 'badly', 'terribly'];
+  }, [errorData.review, errorData.rating]);
 
   return (
     <form className="reviews__form form" action="#" method="post" onSubmit={submitHandler} onBlur={blurHandler}>
@@ -57,7 +71,7 @@ const OfferForm = (): React.JSX.Element => {
               <input className="form__rating-input visually-hidden" name="rating" value={5 - idx}
                 id={`${5 - idx}-stars`}
                 onChange={ratingHandler}
-                checked={rating === 5 - idx}
+                checked={formData.rating === 5 - idx}
                 type="radio"
               />
               <label htmlFor={`${5 - idx}-stars`} className="reviews__rating-label form__rating-label" title={grade}>
@@ -69,7 +83,7 @@ const OfferForm = (): React.JSX.Element => {
           )
         )}
       </div>
-      <textarea className="reviews__textarea form__textarea" id="review" name="review" value={textInput}
+      <textarea className="reviews__textarea form__textarea" id="review" name="review" value={formData.review}
         onChange={textInputHandler}
         placeholder="Tell how was your stay, what you like and what can be improved"
       >
@@ -77,8 +91,8 @@ const OfferForm = (): React.JSX.Element => {
       <div className="reviews__button-wrapper">
         {isErrorDisplayed && !isFormValid ?
           <p className="reviews__help" style={{color: 'red'}}>
-            {textInputError} <br/>
-            {ratingError}
+            {errorData.review} <br/>
+            {errorData.rating}
           </p>
           :
           <p className="reviews__help">

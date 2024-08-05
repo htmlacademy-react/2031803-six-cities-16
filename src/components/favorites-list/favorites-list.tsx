@@ -2,6 +2,7 @@ import React from 'react';
 import {OfferMock} from '../../mocks/types.ts';
 import {v4 as uuidv4} from 'uuid';
 import Card from '../card/card.tsx';
+import {CardType} from '../card/types.ts';
 
 interface FavoritesListProps {
   offers: OfferMock[];
@@ -24,7 +25,7 @@ const FavoritesList = ({ offers }: FavoritesListProps): React.JSX.Element => {
             <div className="favorites__places">
               {
                 offers.filter((offer) => offer.isFavorite && offer.city?.name === city)
-                  .map((cityOffer) => <Card offer={cityOffer} isFavoritesPage key={uuidv4()}/>)
+                  .map((cityOffer) => <Card offer={cityOffer} cardType={CardType.Favorite} key={uuidv4()}/>)
               }
             </div>
           </li>

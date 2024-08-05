@@ -1,23 +1,16 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {City, OfferMock} from '../../mocks/types.ts';
+import {OfferMock} from '../../mocks/types.ts';
 import useMap from '../../hooks/use-map.tsx';
 import {layerGroup, Marker} from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
 interface MapProps {
   cityOffers: OfferMock[];
+  className?: string;
 }
 
-const cityDefault: City = {
-  name: 'Amsterdam',
-  location: {
-    latitude: 52.3809553943508,
-    longitude: 4.939309666406198,
-    zoom: 8
-  }};
-
-const Map = ({cityOffers}: MapProps): React.JSX.Element => {
-  const [city] = useState(cityOffers[0]?.city ? cityOffers[0].city : cityDefault);
+const Map = ({cityOffers, className = 'cities'}: MapProps): React.JSX.Element => {
+  const [city] = useState(cityOffers[0].city);
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
 
@@ -39,11 +32,10 @@ const Map = ({cityOffers}: MapProps): React.JSX.Element => {
       };
     }
   }, [map, cityOffers]);
-
   return (
     <section
-      className="cities__map map"
-      style={{height: '100%',
+      className={`${className}__map map`}
+      style={{height: `${className === 'cities' ? '100%' : '50vh'}`,
         background: 'none'}}
       ref={mapRef}
     >

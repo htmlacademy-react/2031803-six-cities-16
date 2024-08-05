@@ -1,20 +1,16 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import CardList from '../components/card-list/card-list.tsx';
 import {AppContext} from '../components/app/app.tsx';
 import Map from '../components/map/map.tsx';
 import {OfferMock} from '../mocks/types.ts';
 import {v4 as uuidv4} from 'uuid';
 
-const cities = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
+const CITIES = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
 
 const MainPage = (): React.JSX.Element => {
   const { offers } = useContext(AppContext);
   const [activeCity, setActiveCity] = useState('Amsterdam');
   const [cityOffers, setCityOffers] = useState<OfferMock[]>(offers.filter((offer) => offer.city.name === activeCity));
-
-  useEffect(() => {
-    setCityOffers(offers.filter((offer) => offer.city.name === activeCity));
-  },[offers, activeCity]);
 
   return (
     <main className="page__main page__main--index">
@@ -22,10 +18,13 @@ const MainPage = (): React.JSX.Element => {
       <div className="tabs">
         <section className="locations container">
           <ul className="locations__list tabs__list">
-            {cities.map((city) => (
+            {CITIES.map((city) => (
               <li className="locations__item" key={uuidv4()}>
                 <a className={`locations__item-link tabs__item ${city === activeCity ? 'tabs__item--active' : ''}`}
-                  onClick={() => setActiveCity(city)}
+                  onClick={() => {
+                    setActiveCity(city);
+                    setCityOffers(offers.filter((offer) => offer.city.name === city));
+                  }}
                 >
                   <span>{city}</span>
                 </a>
@@ -57,7 +56,10 @@ const MainPage = (): React.JSX.Element => {
             <CardList offers={cityOffers}/>
           </section>
           <div className="cities__right-section">
-            <Map cityOffers={cityOffers}></Map>
+            {cityOffers.length > 0 ?
+              <Map cityOffers={cityOffers}></Map>
+              :
+              null}
           </div>
         </div>
       </div>
