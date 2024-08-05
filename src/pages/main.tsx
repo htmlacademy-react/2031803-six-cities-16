@@ -57,7 +57,10 @@ const MainPage = (): React.JSX.Element => {
             <CardList offers={cityOffers}/>
           </section>
           <div className="cities__right-section">
-            <Map cityOffers={cityOffers}></Map>
+            {cityOffers.length > 0 ?
+              <Map cityOffers={cityOffers}></Map>
+              :
+              null}
           </div>
         </div>
       </div>

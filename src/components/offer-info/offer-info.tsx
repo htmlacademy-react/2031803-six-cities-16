@@ -96,7 +96,10 @@ const OfferInfo = ({ offerID }: OfferInfoProps): React.JSX.Element => {
             <OfferReviewsList offerID={offerID}/>
           </div>
         </div>
-        <Map cityOffers={offersNearby} className={'offer'}></Map>
+        {offersNearby.length > 0 ?
+          <Map cityOffers={offersNearby} className={'offer'}></Map>
+          :
+          null}
       </section>
       <div className="container">
         <section className="near-places places">
