@@ -14,11 +14,20 @@ import FavoritesPage from './pages/favorites.tsx';
 import OfferPage from './pages/offer.tsx';
 import Error404 from './pages/error404.tsx';
 import LoginPage from './pages/login.tsx';
+import {Provider} from 'react-redux';
+import {store} from './store/store.ts';
+import {changeOffers} from './store/reducers/root/root.ts';
+import offers from './mocks/offers.ts';
+
+const fetchData = (): null => {
+  store.dispatch(changeOffers(offers));
+  return null;
+};
 
 const router =
   createBrowserRouter(
     createRoutesFromElements(
-      <Route element={<App/>}>
+      <Route loader={fetchData} element={<App/>}>
         <Route path={AppRoute.Index} element={<Layout isMainPage/>}>
           <Route index element={<MainPage/>}></Route>
         </Route>
@@ -42,6 +51,9 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
+
   </React.StrictMode>
 );

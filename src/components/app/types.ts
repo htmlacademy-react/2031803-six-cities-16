@@ -1,5 +1,3 @@
-import {OfferMock} from '../../mocks/types.ts';
-
 export enum AppRoute {
   Index = '/',
   Favorites = '/favorites',
@@ -14,6 +12,5 @@ export enum AuthStatus {
 }
 export interface Context {
   authStatus: AuthStatus;
-  offers: OfferMock[];
   handleFavorite: (offerID: string) => void;
 }

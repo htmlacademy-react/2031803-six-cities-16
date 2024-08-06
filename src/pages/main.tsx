@@ -1,43 +1,28 @@
-import React, {useContext, useState} from 'react';
+import React from 'react';
 import CardList from '../components/card-list/card-list.tsx';
-import {AppContext} from '../components/app/app.tsx';
 import Map from '../components/map/map.tsx';
-import {OfferMock} from '../mocks/types.ts';
-import {v4 as uuidv4} from 'uuid';
-
-const CITIES = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
+import CitiesList from '../components/cities-list/cities-list.tsx';
+import {CITIES} from '../const.ts';
+import {useAppSelector} from '../hooks/hooks.ts';
+import {selectCity, selectCityOffers} from '../store/reducers/root/root.ts';
 
 const MainPage = (): React.JSX.Element => {
-  const { offers } = useContext(AppContext);
-  const [activeCity, setActiveCity] = useState('Amsterdam');
-  const [cityOffers, setCityOffers] = useState<OfferMock[]>(offers.filter((offer) => offer.city.name === activeCity));
+  const cityOffers = useAppSelector(selectCityOffers);
+  const activeCity = useAppSelector(selectCity);
 
   return (
     <main className="page__main page__main--index">
       <h1 className="visually-hidden">Cities</h1>
       <div className="tabs">
         <section className="locations container">
-          <ul className="locations__list tabs__list">
-            {CITIES.map((city) => (
-              <li className="locations__item" key={uuidv4()}>
-                <a className={`locations__item-link tabs__item ${city === activeCity ? 'tabs__item--active' : ''}`}
-                  onClick={() => {
-                    setActiveCity(city);
-                    setCityOffers(offers.filter((offer) => offer.city.name === city));
-                  }}
-                >
-                  <span>{city}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
+          <CitiesList cities={CITIES}/>
         </section>
       </div>
       <div className="cities">
         <div className="cities__places-container container">
           <section className="cities__places places">
             <h2 className="visually-hidden">Places</h2>
-            <b className="places__found">{cityOffers.length ?? 'No'} places to stay in {activeCity}</b>
+            <b className="places__found">{cityOffers.length > 0 ? cityOffers.length : 'No'} places to stay in {activeCity}</b>
             <form className="places__sorting" action="#" method="get">
               <span className="places__sorting-caption">Sort by</span>
               <span className="places__sorting-type" tabIndex={0}>
@@ -56,10 +41,7 @@ const MainPage = (): React.JSX.Element => {
             <CardList offers={cityOffers}/>
           </section>
           <div className="cities__right-section">
-            {cityOffers.length > 0 ?
-              <Map cityOffers={cityOffers}></Map>
-              :
-              null}
+            {cityOffers.length > 0 && <Map cityOffers={cityOffers}></Map>}
           </div>
         </div>
       </div>

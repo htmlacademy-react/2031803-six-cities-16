@@ -7,13 +7,16 @@ import OfferReviewsList from './offer-reviews-list.tsx';
 import Map from '../map/map.tsx';
 import CardList from '../card-list/card-list.tsx';
 import {CardType} from '../card/types.ts';
+import {useAppSelector} from '../../hooks/hooks.ts';
+import {selectOffers} from '../../store/reducers/root/root.ts';
 
 interface OfferInfoProps {
   offerID: string;
 }
 
 const OfferInfo = ({ offerID }: OfferInfoProps): React.JSX.Element => {
-  const { offers, handleFavorite } = useContext(AppContext);
+  const { handleFavorite } = useContext(AppContext);
+  const offers = useAppSelector(selectOffers);
   const currentOffer = offers?.find((offer: OfferMock) => offer.id === offerID) as OfferMock;
   const { isPremium, isFavorite, images, price, title, type, rating,
     bedrooms, maxAdults, host, description, goods } = currentOffer;

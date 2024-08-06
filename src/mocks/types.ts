@@ -17,8 +17,10 @@ export interface Location {
   zoom: number;
 }
 
-export interface City {
-  name: string;
+export type City = 'Paris' | 'Cologne' | 'Brussels' | 'Amsterdam' | 'Hamburg' | 'Dusseldorf';
+
+export interface CityDetailed {
+  name: City;
   location: Location;
 }
 
@@ -27,7 +29,7 @@ export interface OfferMain {
   title: string;
   type: HousingType;
   price: number;
-  city: City;
+  city: CityDetailed;
   location: Location;
   isFavorite: boolean;
   isPremium: boolean;

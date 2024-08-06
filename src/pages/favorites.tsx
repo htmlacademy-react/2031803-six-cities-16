@@ -1,9 +1,10 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import FavoritesList from '../components/favorites-list/favorites-list.tsx';
-import {AppContext} from '../components/app/app.tsx';
+import {useAppSelector} from '../hooks/hooks.ts';
+import {selectOffers} from '../store/reducers/root/root.ts';
 
 const FavoritesPage = (): React.JSX.Element => {
-  const { offers } = useContext(AppContext);
+  const offers = useAppSelector(selectOffers);
   return (
     <main className={`page__main page__main--favorites${!offers ? ' page__main--favorites-empty' : ''}`}>
       <div className="page__favorites-container container">

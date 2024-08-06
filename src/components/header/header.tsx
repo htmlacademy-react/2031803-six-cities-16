@@ -2,13 +2,16 @@ import React, {useContext} from 'react';
 import {Link} from 'react-router-dom';
 import {AppRoute, AuthStatus} from '../app/types.ts';
 import {AppContext} from '../app/app.tsx';
+import {useAppSelector} from '../../hooks/hooks.ts';
+import {selectOffers} from '../../store/reducers/root/root.ts';
 
 interface HeaderProps {
   isLoginPage?: boolean;
 }
 
 const Header = ({isLoginPage}: HeaderProps): React.JSX.Element => {
-  const { authStatus, offers } = useContext(AppContext);
+  const { authStatus } = useContext(AppContext);
+  const offers = useAppSelector(selectOffers);
   return (
     <header className="header">
       <div className="container">
