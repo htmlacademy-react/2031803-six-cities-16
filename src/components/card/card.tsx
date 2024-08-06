@@ -6,10 +6,10 @@ const Card = ({ offer, cardType, handleActiveCardChoice }: CardProps): React.JSX
   const { isPremium, previewImage, price, title, type, isFavorite, rating, id } = offer;
   return (
     <article className={`${cardType}__card place-card`}
-      onMouseOver={() => handleActiveCardChoice ? handleActiveCardChoice(id) : null}
-      onMouseLeave={() => handleActiveCardChoice ? handleActiveCardChoice() : null}
+      onMouseOver={() => handleActiveCardChoice && handleActiveCardChoice(id)}
+      onMouseLeave={() => handleActiveCardChoice && handleActiveCardChoice()}
     >
-      {isPremium ? <div className="place-card__mark"><span>Premium</span></div> : null}
+      {isPremium && <div className="place-card__mark"><span>Premium</span></div>}
       <div className={`${cardType}__image-wrapper place-card__image-wrapper`}>
         <Link to={`/offer/${id}`}>
           {cardType === CardType.Favorite ?

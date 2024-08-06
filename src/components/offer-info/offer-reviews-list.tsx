@@ -19,7 +19,7 @@ const OfferReviewsList = ({ offerID }: OfferReviewsListProps): React.JSX.Element
       <ul className="reviews__list">
         {reviews.map((review: Review) => <OfferReview review={review} key={review.id}/>)}
       </ul>
-      {authStatus === AuthStatus.Auth ? <OfferForm/> : null}
+      {authStatus === AuthStatus.Auth && <OfferForm/>}
     </section>
   );
 };

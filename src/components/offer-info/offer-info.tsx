@@ -35,12 +35,10 @@ const OfferInfo = ({ offerID }: OfferInfoProps): React.JSX.Element => {
         <div className="offer__container container">
           <div className="offer__wrapper">
             {
-              isPremium ?
+              isPremium &&
                 <div className="offer__mark">
                   <span>Premium</span>
                 </div>
-                :
-                null
             }
             <div className="offer__name-wrapper">
               <h1 className="offer__name">
@@ -99,10 +97,7 @@ const OfferInfo = ({ offerID }: OfferInfoProps): React.JSX.Element => {
             <OfferReviewsList offerID={offerID}/>
           </div>
         </div>
-        {offersNearby.length > 0 ?
-          <Map cityOffers={offersNearby} className={'offer'}></Map>
-          :
-          null}
+        {offersNearby.length > 0 && <Map cityOffers={offersNearby} className={'offer'}></Map>}
       </section>
       <div className="container">
         <section className="near-places places">
