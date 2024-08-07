@@ -1,5 +1,4 @@
-import React, {useContext} from 'react';
-import {AppContext} from '../app/app.tsx';
+import React from 'react';
 import { OfferMock } from '../../mocks/types.ts';
 import {v4 as uuidv4} from 'uuid';
 import OfferHost from './offer-host.tsx';
@@ -7,23 +6,33 @@ import OfferReviewsList from './offer-reviews-list.tsx';
 import Map from '../map/map.tsx';
 import CardList from '../card-list/card-list.tsx';
 import {CardType} from '../card/types.ts';
+import {useAppDispatch, useAppSelector} from '../../hooks/hooks.ts';
+import {selectCityOffers} from '../../store/reducers/offer/offer.ts';
+import {MAX_IMAGES_ON_OFFER_PAGE, MAX_SHOWN_OFFERS_NEARBY} from '../../const.ts';
+import {toggleOfferFavorite} from '../../store/reducers/offer/offer.ts';
 
 interface OfferInfoProps {
   offerID: string;
 }
 
 const OfferInfo = ({ offerID }: OfferInfoProps): React.JSX.Element => {
-  const { offers, handleFavorite } = useContext(AppContext);
+  const offers = useAppSelector(selectCityOffers);
   const currentOffer = offers?.find((offer: OfferMock) => offer.id === offerID) as OfferMock;
   const { isPremium, isFavorite, images, price, title, type, rating,
     bedrooms, maxAdults, host, description, goods } = currentOffer;
-  const offersNearby = offers.filter((offer) => offer.city.name === currentOffer.city.name && offer.id !== currentOffer.id).slice(0, 3);
+  const offersNearby = offers.filter((offer) => offer.id !== currentOffer.id).slice(0, MAX_SHOWN_OFFERS_NEARBY);
+  const dispatch = useAppDispatch();
+
+  const handleFavoriteButtonClick = (): void => {
+    dispatch(toggleOfferFavorite(offerID));
+  };
+
   return (
     <>
       <section className="offer">
         <div className="offer__gallery-container container">
           <div className="offer__gallery">
-            {images.slice(0, 6).map((image) => (
+            {images.slice(0, MAX_IMAGES_ON_OFFER_PAGE).map((image) => (
               <div className="offer__image-wrapper" key={uuidv4()}>
                 <img className="offer__image" src={image} alt="Photo studio"/>
               </div>))}
@@ -32,19 +41,17 @@ const OfferInfo = ({ offerID }: OfferInfoProps): React.JSX.Element => {
         <div className="offer__container container">
           <div className="offer__wrapper">
             {
-              isPremium ?
+              isPremium &&
                 <div className="offer__mark">
                   <span>Premium</span>
                 </div>
-                :
-                null
             }
             <div className="offer__name-wrapper">
               <h1 className="offer__name">
                 {title}
               </h1>
               <button className={`offer__bookmark-button button ${isFavorite ? 'offer__bookmark-button--active' : ''}`}
-                type="button" onClick={() => handleFavorite(offerID)}
+                type="button" onClick={handleFavoriteButtonClick}
               >
                 <svg className="offer__bookmark-icon" width="31" height="33">
                   <use xlinkHref="#icon-bookmark"></use>
@@ -96,10 +103,7 @@ const OfferInfo = ({ offerID }: OfferInfoProps): React.JSX.Element => {
             <OfferReviewsList offerID={offerID}/>
           </div>
         </div>
-        {offersNearby.length > 0 ?
-          <Map cityOffers={offersNearby} className={'offer'}></Map>
-          :
-          null}
+        {offersNearby.length > 0 && <Map cityOffers={offersNearby} className={'offer'}></Map>}
       </section>
       <div className="container">
         <section className="near-places places">

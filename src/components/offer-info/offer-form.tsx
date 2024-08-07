@@ -1,21 +1,6 @@
 import React, {ChangeEvent, FormEvent, useEffect, useState} from 'react';
 import {v4 as uuidv4} from 'uuid';
-
-enum ErrorMessage {
-  Review = 'The review text must contain from 50 to 300 characters.',
-  Rating = 'The rating must be chosen',
-  NoError = ''
-}
-
-interface OfferFormData {
-  review: string;
-  rating: null | number;
-}
-
-interface OfferErrorData {
-  review: ErrorMessage.Review | ErrorMessage.NoError;
-  rating: ErrorMessage.Rating | ErrorMessage.NoError;
-}
+import {ErrorMessage, FormFieldType, OfferErrorData, OfferFormData, ReviewLength} from './types.ts';
 
 const grades = ['perfect', 'good', 'not bad', 'badly', 'terribly'];
 
@@ -25,32 +10,19 @@ const OfferForm = (): React.JSX.Element => {
   const [isErrorDisplayed, setIsErrorDisplayed] = useState(false);
   const [isFormValid, setIsFormValid] = useState(false);
 
-  const textInputHandler = (evt: ChangeEvent<HTMLTextAreaElement>): void => {
+  const formInputHandler = (field: FormFieldType, evt: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>): void => {
     const input = evt.target.value;
-    setFormData({...formData, review: input});
-
-    if (input.length < 50 || input.length > 300) {
-      setErrorData({...errorData, review: ErrorMessage.Review});
-    } else {
-      setErrorData({...errorData, review: ErrorMessage.NoError});
+    if (field === FormFieldType.Review) {
+      setFormData({...formData, review: input});
+      if (input.length < Number(ReviewLength.Min) || input.length > Number(ReviewLength.Max)) {
+        setErrorData({...errorData, review: ErrorMessage.Review});
+      } else {
+        setErrorData({...errorData, review: ErrorMessage.NoError});
+      }
+    } else if (field === FormFieldType.Rating) {
+      setFormData({...formData, rating: Number(evt.target.value)});
+      setErrorData({...errorData, rating: ErrorMessage.NoError});
     }
-  };
-
-  const ratingHandler = (evt: ChangeEvent<HTMLInputElement>): void => {
-    setFormData({...formData, rating: Number(evt.target.value)});
-    setErrorData({...errorData, rating: ErrorMessage.NoError});
-  };
-
-  const submitHandler = (evt: FormEvent<HTMLFormElement>): void => {
-    evt.preventDefault();
-    setFormData({...formData, review: ''});
-    setErrorData({...errorData, review: ErrorMessage.Review});
-    setFormData({...formData, rating: null});
-    setErrorData({...errorData, rating: ErrorMessage.Rating});
-  };
-
-  const blurHandler = (): void => {
-    setIsErrorDisplayed(true);
   };
 
   useEffect(() => {
@@ -61,6 +33,17 @@ const OfferForm = (): React.JSX.Element => {
     }
   }, [errorData.review, errorData.rating]);
 
+  const submitHandler = (evt: FormEvent<HTMLFormElement>): void => {
+    evt.preventDefault();
+    setFormData({...formData, review: '', rating: null});
+    setErrorData({...errorData, review: ErrorMessage.Review, rating: ErrorMessage.Rating});
+    setIsErrorDisplayed(false);
+  };
+
+  const blurHandler = (): void => {
+    setIsErrorDisplayed(true);
+  };
+
   return (
     <form className="reviews__form form" action="#" method="post" onSubmit={submitHandler} onBlur={blurHandler}>
       <label className="reviews__label form__label" htmlFor="review">Your review</label>
@@ -70,7 +53,7 @@ const OfferForm = (): React.JSX.Element => {
             <React.Fragment key={uuidv4()}>
               <input className="form__rating-input visually-hidden" name="rating" value={5 - idx}
                 id={`${5 - idx}-stars`}
-                onChange={ratingHandler}
+                onChange={(evt) => formInputHandler(FormFieldType.Rating, evt)}
                 checked={formData.rating === 5 - idx}
                 type="radio"
               />
@@ -84,7 +67,7 @@ const OfferForm = (): React.JSX.Element => {
         )}
       </div>
       <textarea className="reviews__textarea form__textarea" id="review" name="review" value={formData.review}
-        onChange={textInputHandler}
+        onChange={(evt) => formInputHandler(FormFieldType.Review, evt)}
         placeholder="Tell how was your stay, what you like and what can be improved"
       >
       </textarea>

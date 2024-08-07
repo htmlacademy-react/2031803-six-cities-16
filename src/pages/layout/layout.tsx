@@ -1,6 +1,6 @@
 import React from 'react';
-import Header from '../components/header/header.tsx';
-import Footer from '../components/footer/footer.tsx';
+import Header from '../../components/header/header.tsx';
+import Footer from '../../components/footer/footer.tsx';
 import {Outlet, ScrollRestoration } from 'react-router-dom';
 
 interface LayoutProps {

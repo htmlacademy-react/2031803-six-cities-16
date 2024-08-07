@@ -17,7 +17,7 @@ const OfferHost = ({ host }: OfferHostProps): React.JSX.Element => {
           />
         </div>
         <span className="offer__user-name">{name}</span>
-        <span className="offer__user-status">{isPro ? 'Pro' : null}</span>
+        <span className="offer__user-status">{isPro && 'Pro'}</span>
       </div>
     </>
   );

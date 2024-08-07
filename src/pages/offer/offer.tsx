@@ -1,5 +1,5 @@
 import React from 'react';
-import OfferInfo from '../components/offer-info/offer-info.tsx';
+import OfferInfo from '../../components/offer-info/offer-info.tsx';
 import {useParams} from 'react-router-dom';
 
 const OfferPage = (): React.JSX.Element => {
