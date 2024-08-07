@@ -11,13 +11,18 @@ interface CitiesListProps {
 const CitiesList = ({ cities }: CitiesListProps): React.JSX.Element => {
   const activeCity = useAppSelector(selectCity);
   const dispatch = useAppDispatch();
+
+  const handleCityClick = (city: City): void => {
+    dispatch(changeCity(city));
+  };
+
   return (
     <ul className="locations__list tabs__list">
       {cities.map((city) => (
         <li className="locations__item" key={uuidv4()}>
           <a className={`locations__item-link tabs__item ${city === activeCity ? 'tabs__item--active' : ''}`}
             onClick={() => {
-              dispatch(changeCity(city));
+              handleCityClick(city);
             }}
           >
             <span>{city}</span>

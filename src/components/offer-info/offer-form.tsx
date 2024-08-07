@@ -19,6 +19,11 @@ interface OfferErrorData {
 
 const grades = ['perfect', 'good', 'not bad', 'badly', 'terribly'];
 
+enum ReviewLength {
+  Min = 50,
+  Max = 300
+}
+
 const OfferForm = (): React.JSX.Element => {
   const [formData, setFormData] = useState<OfferFormData>({review: '', rating: null});
   const [errorData, setErrorData] = useState<OfferErrorData>({review: ErrorMessage.Review, rating: ErrorMessage.Rating});
@@ -29,7 +34,7 @@ const OfferForm = (): React.JSX.Element => {
     const input = evt.target.value;
     setFormData({...formData, review: input});
 
-    if (input.length < 50 || input.length > 300) {
+    if (input.length < Number(ReviewLength.Min) || input.length > Number(ReviewLength.Max)) {
       setErrorData({...errorData, review: ErrorMessage.Review});
     } else {
       setErrorData({...errorData, review: ErrorMessage.NoError});

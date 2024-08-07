@@ -8,7 +8,8 @@ import Map from '../map/map.tsx';
 import CardList from '../card-list/card-list.tsx';
 import {CardType} from '../card/types.ts';
 import {useAppSelector} from '../../hooks/hooks.ts';
-import {selectOffers} from '../../store/reducers/root/root.ts';
+import {selectCityOffers} from '../../store/reducers/root/root.ts';
+import {MAX_IMAGES_ON_OFFER_PAGE, MAX_SHOWN_OFFERS_NEARBY} from '../../const.ts';
 
 interface OfferInfoProps {
   offerID: string;
@@ -16,17 +17,17 @@ interface OfferInfoProps {
 
 const OfferInfo = ({ offerID }: OfferInfoProps): React.JSX.Element => {
   const { handleFavorite } = useContext(AppContext);
-  const offers = useAppSelector(selectOffers);
+  const offers = useAppSelector(selectCityOffers);
   const currentOffer = offers?.find((offer: OfferMock) => offer.id === offerID) as OfferMock;
   const { isPremium, isFavorite, images, price, title, type, rating,
     bedrooms, maxAdults, host, description, goods } = currentOffer;
-  const offersNearby = offers.filter((offer) => offer.city.name === currentOffer.city.name && offer.id !== currentOffer.id).slice(0, 3);
+  const offersNearby = offers.filter((offer) => offer.id !== currentOffer.id).slice(0, MAX_SHOWN_OFFERS_NEARBY);
   return (
     <>
       <section className="offer">
         <div className="offer__gallery-container container">
           <div className="offer__gallery">
-            {images.slice(0, 6).map((image) => (
+            {images.slice(0, MAX_IMAGES_ON_OFFER_PAGE).map((image) => (
               <div className="offer__image-wrapper" key={uuidv4()}>
                 <img className="offer__image" src={image} alt="Photo studio"/>
               </div>))}
