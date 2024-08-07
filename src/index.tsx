@@ -8,19 +8,19 @@ import {
   RouterProvider
 } from 'react-router-dom';
 import {AppRoute} from './components/app/types.ts';
-import Layout from './pages/layout.tsx';
-import MainPage from './pages/main.tsx';
-import FavoritesPage from './pages/favorites.tsx';
-import OfferPage from './pages/offer.tsx';
-import Error404 from './pages/error404.tsx';
-import LoginPage from './pages/login.tsx';
+import Layout from './pages/layout/layout.tsx';
+import MainPage from './pages/main/main.tsx';
+import FavoritesPage from './pages/favorites/favorites.tsx';
+import OfferPage from './pages/offer/offer.tsx';
+import Error404 from './pages/error404/error404.tsx';
+import LoginPage from './pages/login/login.tsx';
 import {Provider} from 'react-redux';
 import {store} from './store/store.ts';
 import {changeOffers} from './store/reducers/root/root.ts';
-import offers from './mocks/offers.ts';
+import {offersMocks} from './mocks/index.ts';
 
 const fetchData = (): null => {
-  store.dispatch(changeOffers(offers));
+  store.dispatch(changeOffers(offersMocks));
   return null;
 };
 

@@ -1,10 +1,10 @@
 import React from 'react';
-import CardList from '../components/card-list/card-list.tsx';
-import Map from '../components/map/map.tsx';
-import CitiesList from '../components/cities-list/cities-list.tsx';
-import {CITIES} from '../const.ts';
-import {useAppSelector} from '../hooks/hooks.ts';
-import {selectCity, selectCityOffers} from '../store/reducers/root/root.ts';
+import CardList from '../../components/card-list/card-list.tsx';
+import Map from '../../components/map/map.tsx';
+import CitiesList from '../../components/cities-list/cities-list.tsx';
+import {CITIES} from '../../const.ts';
+import {useAppSelector} from '../../hooks/hooks.ts';
+import {selectCity, selectCityOffers} from '../../store/reducers/root/root.ts';
 
 const MainPage = (): React.JSX.Element => {
   const cityOffers = useAppSelector(selectCityOffers);

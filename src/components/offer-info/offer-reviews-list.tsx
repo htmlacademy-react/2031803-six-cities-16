@@ -2,7 +2,7 @@ import React, {useContext, useState} from 'react';
 import OfferForm from './offer-form.tsx';
 import OfferReview from './offer-review.tsx';
 import {Review, Reviews} from '../../mocks/types.ts';
-import reviewsMocks from '../../mocks/reviews.ts';
+import {reviewsMocks} from '../../mocks/index.ts';
 import {AppContext} from '../app/app.tsx';
 import {AuthStatus} from '../app/types.ts';
 
