@@ -16,11 +16,11 @@ import Error404 from './pages/error404/error404.tsx';
 import LoginPage from './pages/login/login.tsx';
 import {Provider} from 'react-redux';
 import {store} from './store/store.ts';
-import {changeOffers} from './store/reducers/root/root.ts';
+import {updateOffers} from './store/reducers/offer/offer.ts';
 import {offersMocks} from './mocks/index.ts';
 
 const fetchData = (): null => {
-  store.dispatch(changeOffers(offersMocks));
+  store.dispatch(updateOffers(offersMocks));
   return null;
 };
 

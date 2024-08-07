@@ -1,7 +1,7 @@
 import React from 'react';
 import {City} from '../../mocks/types.ts';
 import {v4 as uuidv4} from 'uuid';
-import {selectCity, changeCity} from '../../store/reducers/root/root.ts';
+import {selectCity, changeCity} from '../../store/reducers/city/city.ts';
 import {useAppDispatch, useAppSelector} from '../../hooks/hooks.ts';
 
 interface CitiesListProps {

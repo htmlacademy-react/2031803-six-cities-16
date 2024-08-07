@@ -1,7 +1,7 @@
 import React from 'react';
 import FavoritesList from '../../components/favorites-list/favorites-list.tsx';
 import {useAppSelector} from '../../hooks/hooks.ts';
-import {selectOffers} from '../../store/reducers/root/root.ts';
+import {selectOffers} from '../../store/reducers/offer/offer.ts';
 
 const FavoritesPage = (): React.JSX.Element => {
   const offers = useAppSelector(selectOffers);

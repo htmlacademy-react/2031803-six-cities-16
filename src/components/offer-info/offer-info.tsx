@@ -1,5 +1,4 @@
-import React, {useContext} from 'react';
-import {AppContext} from '../app/app.tsx';
+import React from 'react';
 import { OfferMock } from '../../mocks/types.ts';
 import {v4 as uuidv4} from 'uuid';
 import OfferHost from './offer-host.tsx';
@@ -7,21 +6,27 @@ import OfferReviewsList from './offer-reviews-list.tsx';
 import Map from '../map/map.tsx';
 import CardList from '../card-list/card-list.tsx';
 import {CardType} from '../card/types.ts';
-import {useAppSelector} from '../../hooks/hooks.ts';
-import {selectCityOffers} from '../../store/reducers/root/root.ts';
+import {useAppDispatch, useAppSelector} from '../../hooks/hooks.ts';
+import {selectCityOffers} from '../../store/reducers/offer/offer.ts';
 import {MAX_IMAGES_ON_OFFER_PAGE, MAX_SHOWN_OFFERS_NEARBY} from '../../const.ts';
+import {toggleOfferFavorite} from '../../store/reducers/offer/offer.ts';
 
 interface OfferInfoProps {
   offerID: string;
 }
 
 const OfferInfo = ({ offerID }: OfferInfoProps): React.JSX.Element => {
-  const { handleFavorite } = useContext(AppContext);
   const offers = useAppSelector(selectCityOffers);
   const currentOffer = offers?.find((offer: OfferMock) => offer.id === offerID) as OfferMock;
   const { isPremium, isFavorite, images, price, title, type, rating,
     bedrooms, maxAdults, host, description, goods } = currentOffer;
   const offersNearby = offers.filter((offer) => offer.id !== currentOffer.id).slice(0, MAX_SHOWN_OFFERS_NEARBY);
+  const dispatch = useAppDispatch();
+
+  const handleFavoriteButtonClick = (): void => {
+    dispatch(toggleOfferFavorite(offerID));
+  };
+
   return (
     <>
       <section className="offer">
@@ -46,7 +51,7 @@ const OfferInfo = ({ offerID }: OfferInfoProps): React.JSX.Element => {
                 {title}
               </h1>
               <button className={`offer__bookmark-button button ${isFavorite ? 'offer__bookmark-button--active' : ''}`}
-                type="button" onClick={() => handleFavorite(offerID)}
+                type="button" onClick={handleFavoriteButtonClick}
               >
                 <svg className="offer__bookmark-icon" width="31" height="33">
                   <use xlinkHref="#icon-bookmark"></use>

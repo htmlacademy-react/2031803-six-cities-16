@@ -4,7 +4,8 @@ import Map from '../../components/map/map.tsx';
 import CitiesList from '../../components/cities-list/cities-list.tsx';
 import {CITIES} from '../../const.ts';
 import {useAppSelector} from '../../hooks/hooks.ts';
-import {selectCity, selectCityOffers} from '../../store/reducers/root/root.ts';
+import {selectCity} from '../../store/reducers/city/city.ts';
+import {selectCityOffers} from '../../store/reducers/offer/offer.ts';
 
 const MainPage = (): React.JSX.Element => {
   const cityOffers = useAppSelector(selectCityOffers);
