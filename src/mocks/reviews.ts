@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import { Reviews} from './types.ts';
 
-export const reviews: Reviews = {
+const reviews: Reviews = {
   '1': [
     {
       id: 1,
