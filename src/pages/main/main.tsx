@@ -6,7 +6,7 @@ import {CITIES} from '../../const.ts';
 import {useAppSelector} from '../../hooks/hooks.ts';
 import {selectCity} from '../../store/reducers/city/city.ts';
 import {selectCityOffers} from '../../store/reducers/offer/offer.ts';
-import SortingList from '../../components/sorting-list/sorting-list.tsx';
+import SortingForm from '../../components/sorting-list/sorting-form.tsx';
 
 const MainPage = (): React.JSX.Element => {
   const cityOffers = useAppSelector(selectCityOffers);
@@ -28,16 +28,7 @@ const MainPage = (): React.JSX.Element => {
               <b className="places__found">{cityOffers.length} places to stay
                 in {activeCity}
               </b>
-              <form className="places__sorting" action="#" method="get">
-                <span className="places__sorting-caption">Sort by</span>
-                <span className="places__sorting-type" tabIndex={0}>
-                  Popular
-                  <svg className="places__sorting-arrow" width="7" height="4">
-                    <use xlinkHref="#icon-arrow-select"></use>
-                  </svg>
-                </span>
-                <SortingList/>
-              </form>
+              <SortingForm/>
               <CardList offers={cityOffers}/>
             </section>
             <div className="cities__right-section">
