@@ -2,13 +2,16 @@ import {OfferMock} from '../../../mocks/types.ts';
 import {createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../../store.ts';
 import {selectCity} from '../city/city.ts';
+import {SortOption} from '../../../components/sorting-list/types.ts';
 
 interface State {
   offers: OfferMock[];
+  sort: SortOption;
 }
 
 const initialState: State = {
-  offers: []
+  offers: [],
+  sort: SortOption.Popular
 };
 
 const offerSlice = createSlice({
@@ -25,6 +28,9 @@ const offerSlice = createSlice({
         state.offers[index].isFavorite = !state.offers[index].isFavorite;
       }
     },
+    changeOfferSort(state, action: PayloadAction<SortOption>) {
+      state.sort = action.payload;
+    }
   }});
 
 const {actions, reducer} = offerSlice;
@@ -36,5 +42,5 @@ export const selectCityOffers = createSelector(
   (city, offers) => offers.filter((offer) => offer.city.name === city),
 );
 
-export const { updateOffers, toggleOfferFavorite } = actions;
+export const { updateOffers, toggleOfferFavorite, changeOfferSort } = actions;
 export default reducer;
