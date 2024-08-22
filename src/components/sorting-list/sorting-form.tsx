@@ -3,8 +3,7 @@ import {v4 as uuidv4} from 'uuid';
 import {SortOption} from './types.ts';
 import {useAppDispatch, useAppSelector} from '../../hooks/hooks.ts';
 import {changeOfferSort, selectOfferSort} from '../../store/reducers/offer/offer.ts';
-
-const SORT_OPTIONS: SortOption[] = [SortOption.Popular, SortOption.PriceAsc, SortOption.PriceDesc, SortOption.TopRated];
+import {SORT_OPTIONS} from '../../const.ts';
 
 const SortingForm = (): React.JSX.Element => {
   const [isOpened, setIsOpened] = useState<boolean>(false);

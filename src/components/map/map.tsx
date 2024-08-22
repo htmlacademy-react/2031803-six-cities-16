@@ -1,15 +1,29 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {OfferMock} from '../../mocks/types.ts';
 import useMap from '../../hooks/use-map.tsx';
-import {layerGroup, Marker} from 'leaflet';
+import {Icon, layerGroup, Marker} from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import {URL_MARKER_CURRENT, URL_MARKER_DEFAULT} from '../../const.ts';
 
 interface MapProps {
   cityOffers: OfferMock[];
   className?: string;
+  selectedOfferId: string | null;
 }
 
-const Map = ({cityOffers, className = 'cities'}: MapProps): React.JSX.Element => {
+const defaultCustomIcon = new Icon({
+  iconUrl: URL_MARKER_DEFAULT,
+  iconSize: [27, 39],
+  iconAnchor: [20, 40]
+});
+
+const currentCustomIcon = new Icon({
+  iconUrl: URL_MARKER_CURRENT,
+  iconSize: [27, 39],
+  iconAnchor: [20, 40]
+});
+
+const Map = ({cityOffers, className = 'cities', selectedOfferId}: MapProps): React.JSX.Element => {
   const [city] = useState(cityOffers[0].city);
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
@@ -24,6 +38,11 @@ const Map = ({cityOffers, className = 'cities'}: MapProps): React.JSX.Element =>
         });
 
         marker
+          .setIcon(
+            selectedOfferId && offer.id === selectedOfferId
+              ? currentCustomIcon
+              : defaultCustomIcon
+          )
           .addTo(markerLayer);
       });
 
@@ -31,7 +50,7 @@ const Map = ({cityOffers, className = 'cities'}: MapProps): React.JSX.Element =>
         map.removeLayer(markerLayer);
       };
     }
-  }, [map, cityOffers]);
+  }, [map, cityOffers, selectedOfferId]);
   return (
     <section
       className={`${className}__map map`}

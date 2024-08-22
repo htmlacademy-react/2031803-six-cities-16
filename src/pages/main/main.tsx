@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import CardList from '../../components/card-list/card-list.tsx';
 import Map from '../../components/map/map.tsx';
 import CitiesList from '../../components/cities-list/cities-list.tsx';
@@ -11,6 +11,10 @@ import SortingForm from '../../components/sorting-list/sorting-form.tsx';
 const MainPage = (): React.JSX.Element => {
   const cityOffers = useAppSelector(selectCityOffers);
   const activeCity = useAppSelector(selectCity);
+  const [activeCardID, setActiveCardID] = useState<string | null>(null);
+  const handleActiveCardChoice = (id?: string): void => {
+    setActiveCardID(id ?? null);
+  };
 
   return (
     <main className={`page__main page__main--index${cityOffers.length > 0 ? '' : ' page__main--index-empty'}`}>
@@ -29,10 +33,10 @@ const MainPage = (): React.JSX.Element => {
                 in {activeCity}
               </b>
               <SortingForm/>
-              <CardList offers={cityOffers}/>
+              <CardList offers={cityOffers} handleActiveCardChoice={handleActiveCardChoice}/>
             </section>
             <div className="cities__right-section">
-              <Map cityOffers={cityOffers}></Map>
+              <Map cityOffers={cityOffers} selectedOfferId={activeCardID}></Map>
             </div>
           </div>
           :
