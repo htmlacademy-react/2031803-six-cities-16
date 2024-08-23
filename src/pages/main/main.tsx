@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import CardList from '../../components/card-list/card-list.tsx';
 import Map from '../../components/map/map.tsx';
 import CitiesList from '../../components/cities-list/cities-list.tsx';
@@ -6,10 +6,15 @@ import {CITIES} from '../../const.ts';
 import {useAppSelector} from '../../hooks/hooks.ts';
 import {selectCity} from '../../store/reducers/city/city.ts';
 import {selectCityOffers} from '../../store/reducers/offer/offer.ts';
+import SortingForm from '../../components/sorting-list/sorting-form.tsx';
 
 const MainPage = (): React.JSX.Element => {
   const cityOffers = useAppSelector(selectCityOffers);
   const activeCity = useAppSelector(selectCity);
+  const [activeCardID, setActiveCardID] = useState<string | null>(null);
+  const handleActiveCardChoice = (id?: string): void => {
+    setActiveCardID(id ?? null);
+  };
 
   return (
     <main className={`page__main page__main--index${cityOffers.length > 0 ? '' : ' page__main--index-empty'}`}>
@@ -27,25 +32,11 @@ const MainPage = (): React.JSX.Element => {
               <b className="places__found">{cityOffers.length} places to stay
                 in {activeCity}
               </b>
-              <form className="places__sorting" action="#" method="get">
-                <span className="places__sorting-caption">Sort by</span>
-                <span className="places__sorting-type" tabIndex={0}>
-                  Popular
-                  <svg className="places__sorting-arrow" width="7" height="4">
-                    <use xlinkHref="#icon-arrow-select"></use>
-                  </svg>
-                </span>
-                <ul className="places__options places__options--custom places__options--opened">
-                  <li className="places__option places__option--active" tabIndex={0}>Popular</li>
-                  <li className="places__option" tabIndex={0}>Price: low to high</li>
-                  <li className="places__option" tabIndex={0}>Price: high to low</li>
-                  <li className="places__option" tabIndex={0}>Top rated first</li>
-                </ul>
-              </form>
-              <CardList offers={cityOffers}/>
+              <SortingForm/>
+              <CardList offers={cityOffers} handleActiveCardChoice={handleActiveCardChoice}/>
             </section>
             <div className="cities__right-section">
-              <Map cityOffers={cityOffers}></Map>
+              <Map cityOffers={cityOffers} selectedOfferId={activeCardID}></Map>
             </div>
           </div>
           :
