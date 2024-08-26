@@ -7,9 +7,11 @@ import {useAppSelector} from '../../hooks/hooks.ts';
 import {selectCity} from '../../store/reducers/city/city.ts';
 import {selectCityOffers} from '../../store/reducers/offer/offer.ts';
 import SortingForm from '../../components/sorting-list/sorting-form.tsx';
+import {useGetOffersQuery} from '../../store/reducers/api/api.ts';
 
 const MainPage = (): React.JSX.Element => {
-  const cityOffers = useAppSelector(selectCityOffers);
+  const { data: offers } = useGetOffersQuery();
+  const cityOffers = useAppSelector((state) => selectCityOffers(state, offers ?? []));
   const activeCity = useAppSelector(selectCity);
   const [activeCardID, setActiveCardID] = useState<string | null>(null);
   const handleActiveCardChoice = (id?: string): void => {

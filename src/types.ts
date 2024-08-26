@@ -37,7 +37,7 @@ export interface OfferMain {
   previewImage: string;
 }
 
-type OfferDetails = Omit<OfferMain, 'previewImage'> & {
+export type OfferDetailed = Omit<OfferMain, 'previewImage'> & {
   description: string;
   bedrooms: number;
   goods: string[];
@@ -49,8 +49,6 @@ type OfferDetails = Omit<OfferMain, 'previewImage'> & {
   images: string[];
   maxAdults: number;
 };
-
-export type OfferMock = OfferMain & OfferDetails;
 
 export interface User {
   name: string;

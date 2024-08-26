@@ -1,4 +1,4 @@
-import {City} from './mocks/types.ts';
+import {City} from './types.ts';
 import {SortOption} from './components/sorting-list/types.ts';
 import pin from '../public/img/pin.svg';
 import activePin from '../public/img/pin-active.svg';

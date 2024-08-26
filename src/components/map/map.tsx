@@ -1,12 +1,12 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {OfferMock} from '../../mocks/types.ts';
+import {OfferDetailed, OfferMain} from '../../types.ts';
 import useMap from '../../hooks/use-map.tsx';
 import {Icon, layerGroup, Marker} from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import {URL_MARKER_CURRENT, URL_MARKER_DEFAULT} from '../../const.ts';
 
 interface MapProps {
-  cityOffers: OfferMock[];
+  cityOffers: (OfferMain | OfferDetailed)[];
   className?: string;
   selectedOfferId: string | null;
 }

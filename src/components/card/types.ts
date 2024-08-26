@@ -1,4 +1,4 @@
-import {OfferMock} from '../../mocks/types.ts';
+import {OfferMain} from '../../types.ts';
 
 export enum CardType {
   Main = 'cities',
@@ -7,7 +7,7 @@ export enum CardType {
 }
 
 export interface CardProps {
-  offer: OfferMock;
+  offer: OfferMain;
   cardType: CardType;
   handleActiveCardChoice?: (id?: string) => void;
 }

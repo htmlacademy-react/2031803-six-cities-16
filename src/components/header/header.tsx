@@ -2,8 +2,8 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import {AppRoute} from '../app/types.ts';
 import {useAppSelector} from '../../hooks/hooks.ts';
-import {selectOffers} from '../../store/reducers/offer/offer.ts';
 import {AuthStatus, selectAuthStatus} from '../../store/reducers/auth/auth.ts';
+import {useGetFavoritesQuery} from '../../store/reducers/api/api.ts';
 
 interface HeaderProps {
   isLoginPage?: boolean;
@@ -11,7 +11,7 @@ interface HeaderProps {
 
 const Header = ({isLoginPage}: HeaderProps): React.JSX.Element => {
   const authStatus = useAppSelector(selectAuthStatus);
-  const offers = useAppSelector(selectOffers);
+  const { data: favoriteOffers } = useGetFavoritesQuery();
   return (
     <header className="header">
       <div className="container">
@@ -31,7 +31,7 @@ const Header = ({isLoginPage}: HeaderProps): React.JSX.Element => {
                       <div className="header__avatar-wrapper user__avatar-wrapper">
                       </div>
                       <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                      <span className="header__favorite-count">{offers?.filter((offer) => offer.isFavorite).length}</span>
+                      <span className="header__favorite-count">{favoriteOffers?.length ?? 0}</span>
                     </Link>
                   </li>
                   <li className="header__nav-item">

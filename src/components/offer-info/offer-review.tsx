@@ -1,5 +1,5 @@
 import React from 'react';
-import {Review} from '../../mocks/types.ts';
+import {Review} from '../../types.ts';
 
 interface OfferReviewProps {
   review: Review;

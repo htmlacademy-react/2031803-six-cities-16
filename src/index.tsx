@@ -16,18 +16,11 @@ import Error404 from './pages/error404/error404.tsx';
 import LoginPage from './pages/login/login.tsx';
 import {Provider} from 'react-redux';
 import {store} from './store/store.ts';
-import {updateOffers} from './store/reducers/offer/offer.ts';
-import {offersMocks} from './mocks/index.ts';
-
-const fetchData = (): null => {
-  store.dispatch(updateOffers(offersMocks));
-  return null;
-};
 
 const router =
   createBrowserRouter(
     createRoutesFromElements(
-      <Route loader={fetchData} element={<App/>}>
+      <Route element={<App/>}>
         <Route path={AppRoute.Index} element={<Layout isMainPage/>}>
           <Route index element={<MainPage/>}></Route>
         </Route>
