@@ -8,9 +8,10 @@ import {selectCity} from '../../store/reducers/city/city.ts';
 import {selectCityOffers} from '../../store/reducers/offer/offer.ts';
 import SortingForm from '../../components/sorting-list/sorting-form.tsx';
 import {useGetOffersQuery} from '../../store/reducers/api/api.ts';
+import Loader from '../../components/spinner/spinner.tsx';
 
 const MainPage = (): React.JSX.Element => {
-  const { data: offers } = useGetOffersQuery();
+  const { data: offers, isFetching } = useGetOffersQuery();
   const cityOffers = useAppSelector((state) => selectCityOffers(state, offers ?? []));
   const activeCity = useAppSelector(selectCity);
   const [activeCardID, setActiveCardID] = useState<string | null>(null);
@@ -27,7 +28,7 @@ const MainPage = (): React.JSX.Element => {
         </section>
       </div>
       <div className="cities">
-        {cityOffers.length > 0 ?
+        {cityOffers.length > 0 &&
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
@@ -40,18 +41,20 @@ const MainPage = (): React.JSX.Element => {
             <div className="cities__right-section">
               <Map cityOffers={cityOffers} selectedOfferId={activeCardID}></Map>
             </div>
-          </div>
-          :
+          </div>}
+        {cityOffers.length === 0 && !isFetching &&
           <div className="cities__places-container cities__places-container--empty container">
             <section className="cities__no-places">
               <div className="cities__status-wrapper tabs__content">
                 <b className="cities__status">No places to stay available</b>
-                <p className="cities__status-description">We could not find any property available at the moment in {activeCity}
+                <p className="cities__status-description">We could not find any property available at the moment
+                in {activeCity}
                 </p>
               </div>
             </section>
             <div className="cities__right-section"></div>
           </div>}
+        {isFetching && <Loader/>}
       </div>
     </main>
   );
