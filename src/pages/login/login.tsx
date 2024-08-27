@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {useMakeAuthMutation} from '../../store/reducers/api/api.ts';
+import {useGetAuthStatusQuery, useMakeAuthMutation} from '../../store/reducers/api/api.ts';
 import {LoginFormData} from '../../types.ts';
 import {useNavigate} from 'react-router-dom';
 import {AppRoute} from '../../components/app/types.ts';
@@ -7,6 +7,7 @@ import {useAppDispatch} from '../../hooks/hooks.ts';
 import {setAccessToken} from '../../store/reducers/auth/auth.ts';
 
 const LoginPage = (): React.JSX.Element => {
+  const { refetch: refetchAuthStatus } = useGetAuthStatusQuery();
   const [makeAuth] = useMakeAuthMutation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -32,6 +33,7 @@ const LoginPage = (): React.JSX.Element => {
     if (token) {
       localStorage.setItem('six-cities-token', token);
       dispatch(setAccessToken(token));
+      refetchAuthStatus();
       navigate(AppRoute.Index);
     }
     form.reset();

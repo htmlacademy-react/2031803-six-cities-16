@@ -9,13 +9,16 @@ import {useAppDispatch} from '../../hooks/hooks.ts';
 import {MAX_IMAGES_ON_OFFER_PAGE, MAX_SHOWN_OFFERS_NEARBY} from '../../const.ts';
 import {toggleOfferFavorite} from '../../store/reducers/offer/offer.ts';
 import {useGetOfferQuery, useGetOffersNearbyQuery} from '../../store/reducers/api/api.ts';
+import {useNavigate} from 'react-router-dom';
+import {AppRoute} from '../app/types.ts';
 
 interface OfferInfoProps {
   offerID: string;
 }
 
 const OfferInfo = ({ offerID }: OfferInfoProps): React.JSX.Element => {
-  const {data: currentOffer } = useGetOfferQuery(offerID);
+  const navigate = useNavigate();
+  const {data: currentOffer, isFetching } = useGetOfferQuery(offerID);
   const {data: offersNearby} = useGetOffersNearbyQuery(offerID);
   const offersNearbyVisible = offersNearby?.slice(0, MAX_SHOWN_OFFERS_NEARBY) ?? [];
   const dispatch = useAppDispatch();
@@ -25,6 +28,7 @@ const OfferInfo = ({ offerID }: OfferInfoProps): React.JSX.Element => {
   };
   return (
     <>
+      {!currentOffer && !isFetching && navigate(AppRoute.Unknown)}
       {currentOffer && offersNearby &&
         <section className="offer">
           <div className="offer__gallery-container container">

@@ -10,14 +10,14 @@ interface HeaderProps {
 }
 
 const Header = ({isLoginPage}: HeaderProps): React.JSX.Element => {
-  const { data: userAuth } = useGetAuthStatusQuery();
+  const { data: userAuth, refetch: refetchAuthStatus, isError } = useGetAuthStatusQuery();
   const { data: favoriteOffers } = useGetFavoritesQuery();
   const [makeLogout] = useMakeLogoutMutation();
   const dispatch = useAppDispatch();
 
   const handleLogout = (evt: React.MouseEvent<HTMLAnchorElement, MouseEvent>): void => {
     evt.preventDefault();
-    makeLogout();
+    makeLogout().unwrap().then(() => refetchAuthStatus());
     localStorage.removeItem('six-cities-token');
     dispatch(setAccessToken(null));
   };
@@ -33,7 +33,7 @@ const Header = ({isLoginPage}: HeaderProps): React.JSX.Element => {
           {!isLoginPage &&
           <nav className="header__nav">
             <ul className="header__nav-list">
-              {userAuth ?
+              {userAuth && !isError &&
                 <>
                   <li className="header__nav-item user">
                     <Link className="header__nav-link header__nav-link--profile" to={AppRoute.Favorites}>
@@ -48,8 +48,8 @@ const Header = ({isLoginPage}: HeaderProps): React.JSX.Element => {
                       <span className="header__signout">Sign out</span>
                     </a>
                   </li>
-                </>
-                :
+                </>}
+              { isError &&
                 <li className="header__nav-item user">
                   <Link to={AppRoute.Login} className="header__nav-link header__nav-link--profile">
                     <div className="header__avatar-wrapper user__avatar-wrapper">
