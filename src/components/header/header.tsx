@@ -1,17 +1,26 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import {AppRoute} from '../app/types.ts';
-import {useAppSelector} from '../../hooks/hooks.ts';
-import {AuthStatus, selectAuthStatus} from '../../store/reducers/auth/auth.ts';
-import {useGetFavoritesQuery} from '../../store/reducers/api/api.ts';
+import {useGetAuthStatusQuery, useGetFavoritesQuery, useMakeLogoutMutation} from '../../store/reducers/api/api.ts';
+import {useAppDispatch} from '../../hooks/hooks.ts';
+import {setAccessToken} from '../../store/reducers/auth/auth.ts';
 
 interface HeaderProps {
   isLoginPage?: boolean;
 }
 
 const Header = ({isLoginPage}: HeaderProps): React.JSX.Element => {
-  const authStatus = useAppSelector(selectAuthStatus);
+  const { data: userAuth } = useGetAuthStatusQuery();
   const { data: favoriteOffers } = useGetFavoritesQuery();
+  const [makeLogout] = useMakeLogoutMutation();
+  const dispatch = useAppDispatch();
+
+  const handleLogout = (evt: React.MouseEvent<HTMLAnchorElement, MouseEvent>): void => {
+    evt.preventDefault();
+    makeLogout();
+    localStorage.removeItem('six-cities-token');
+    dispatch(setAccessToken(null));
+  };
   return (
     <header className="header">
       <div className="container">
@@ -24,7 +33,7 @@ const Header = ({isLoginPage}: HeaderProps): React.JSX.Element => {
           {!isLoginPage &&
           <nav className="header__nav">
             <ul className="header__nav-list">
-              {authStatus === AuthStatus.Auth ?
+              {userAuth ?
                 <>
                   <li className="header__nav-item user">
                     <Link className="header__nav-link header__nav-link--profile" to={AppRoute.Favorites}>
@@ -35,18 +44,18 @@ const Header = ({isLoginPage}: HeaderProps): React.JSX.Element => {
                     </Link>
                   </li>
                   <li className="header__nav-item">
-                    <a className="header__nav-link" href="#">
+                    <a className="header__nav-link" href="#" onClick={handleLogout}>
                       <span className="header__signout">Sign out</span>
                     </a>
                   </li>
                 </>
                 :
                 <li className="header__nav-item user">
-                  <a className="header__nav-link header__nav-link--profile" href="#">
+                  <Link to={AppRoute.Login} className="header__nav-link header__nav-link--profile">
                     <div className="header__avatar-wrapper user__avatar-wrapper">
                     </div>
                     <span className="header__login">Sign in</span>
-                  </a>
+                  </Link>
                 </li>}
             </ul>
           </nav>}

@@ -56,6 +56,11 @@ export interface User {
   isPro: boolean;
 }
 
+export type UserAuthResponse = User & {
+  email: string;
+  token: string;
+}
+
 export interface Review {
   id: number;
   date: string;
@@ -66,4 +71,9 @@ export interface Review {
 
 export interface Reviews {
   [offerId: string]: Review[];
+}
+
+export interface LoginFormData {
+  email: string;
+  password: string;
 }

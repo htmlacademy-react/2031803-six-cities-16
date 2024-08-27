@@ -1,32 +1,27 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../../store.ts';
 
-export enum AuthStatus {
-  Auth = 'AUTH',
-  NoAuth = 'NO_AUTH'
-}
-
 interface State {
-  authorizationStatus: AuthStatus;
+  accessToken: string | null;
 }
 
 const initialState: State = {
-  authorizationStatus: AuthStatus.Auth,
+  accessToken: localStorage.getItem('six-cities-token') ?? null
 };
 
-const citySlice = createSlice({
-  name: 'city',
+const authSlice = createSlice({
+  name: 'auth',
   initialState,
   reducers: {
-    changeAuthStatus(state, action: PayloadAction<AuthStatus>) {
-      state.authorizationStatus = action.payload;
+    setAccessToken(state, action: PayloadAction<string | null>) {
+      state.accessToken = action.payload;
     }
   }
 });
 
-const {actions, reducer} = citySlice;
+const {actions, reducer} = authSlice;
 
-export const selectAuthStatus = (state: RootState): AuthStatus => state.auth.authorizationStatus;
+export const selectAccessToken = (state: RootState): string | null => state.auth.accessToken;
 
-export const { changeAuthStatus } = actions;
+export const { setAccessToken } = actions;
 export default reducer;
