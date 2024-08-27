@@ -1,19 +1,23 @@
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import CardList from '../../components/card-list/card-list.tsx';
 import Map from '../../components/map/map.tsx';
 import CitiesList from '../../components/cities-list/cities-list.tsx';
 import {CITIES} from '../../const.ts';
 import {useAppSelector} from '../../hooks/hooks.ts';
 import {selectCity} from '../../store/reducers/city/city.ts';
-import {selectCityOffers} from '../../store/reducers/offer/offer.ts';
 import SortingForm from '../../components/sorting-list/sorting-form.tsx';
 import {useGetOffersQuery} from '../../store/reducers/api/api.ts';
 import Loader from '../../components/spinner/spinner.tsx';
 
 const MainPage = (): React.JSX.Element => {
   const { data: offers, isFetching } = useGetOffersQuery();
-  const cityOffers = useAppSelector((state) => selectCityOffers(state, offers ?? []));
   const activeCity = useAppSelector(selectCity);
+  const cityOffers = useMemo(() => {
+    if (offers) {
+      return offers.filter((offer) => offer.city.name === activeCity);
+    }
+    return [];
+  }, [offers, activeCity]);
   const [activeCardID, setActiveCardID] = useState<string | null>(null);
   const handleActiveCardChoice = (id?: string): void => {
     setActiveCardID(id ?? null);
@@ -39,7 +43,7 @@ const MainPage = (): React.JSX.Element => {
               <CardList offers={cityOffers} handleActiveCardChoice={handleActiveCardChoice}/>
             </section>
             <div className="cities__right-section">
-              <Map cityOffers={cityOffers} selectedOfferId={activeCardID}></Map>
+              <Map city={cityOffers[0].city} cityOffers={cityOffers} selectedOfferId={activeCardID}></Map>
             </div>
           </div>}
         {cityOffers.length === 0 && !isFetching &&

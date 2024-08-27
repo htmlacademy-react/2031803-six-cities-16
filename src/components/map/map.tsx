@@ -1,5 +1,5 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {OfferDetailed, OfferMain} from '../../types.ts';
+import React, {useEffect, useRef} from 'react';
+import {CityDetailed, OfferDetailed, OfferMain} from '../../types.ts';
 import useMap from '../../hooks/use-map.tsx';
 import {Icon, layerGroup, Marker} from 'leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -7,6 +7,7 @@ import {URL_MARKER_CURRENT, URL_MARKER_DEFAULT} from '../../const.ts';
 
 interface MapProps {
   cityOffers: (OfferMain | OfferDetailed)[];
+  city: CityDetailed;
   className?: string;
   selectedOfferId: string | null;
 }
@@ -23,18 +24,21 @@ const currentCustomIcon = new Icon({
   iconAnchor: [20, 40]
 });
 
-const Map = ({cityOffers, className = 'cities', selectedOfferId}: MapProps): React.JSX.Element => {
-  const [city] = useState(cityOffers[0].city);
+const Map = ({city, cityOffers, className = 'cities', selectedOfferId}: MapProps): React.JSX.Element => {
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
-
+  useEffect(() => {
+    if (map) {
+      map.flyTo([city.location.latitude, city.location.longitude], city.location.zoom);
+    }
+  }, [city, map]);
   useEffect(() => {
     if (map) {
       const markerLayer = layerGroup().addTo(map);
       cityOffers.forEach((offer) => {
         const marker = new Marker({
-          lat: offer.city.location.latitude,
-          lng: offer.city.location.longitude,
+          lat: offer.location.latitude,
+          lng: offer.location.longitude,
         });
 
         marker
@@ -50,7 +54,7 @@ const Map = ({cityOffers, className = 'cities', selectedOfferId}: MapProps): Rea
         map.removeLayer(markerLayer);
       };
     }
-  }, [map, cityOffers, selectedOfferId]);
+  }, [map, cityOffers, selectedOfferId, city]);
   return (
     <section
       className={`${className}__map map`}
