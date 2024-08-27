@@ -18,7 +18,7 @@ export const apiSlice = createApi({
         const state = getState() as RootState;
         const token = selectAccessToken(state);
         if (token) {
-          headers.set('X-Token', 'ZWxpbmE1MDUwNTA1MUB5YW5kZXgucnU=');
+          headers.set('X-Token', token);
         }
         return headers;
       },
