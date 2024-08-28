@@ -1,18 +1,30 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import FavoritesList from '../../components/favorites-list/favorites-list.tsx';
+import {useGetFavoritesQuery} from '../../store/reducers/api/api.ts';
 import {useAppSelector} from '../../hooks/hooks.ts';
-import {selectOffers} from '../../store/reducers/offer/offer.ts';
+import {selectIsAuth} from '../../store/reducers/auth/auth.ts';
+import {useNavigate} from 'react-router-dom';
+import {AppRoute} from '../../components/app/types.ts';
 
 const FavoritesPage = (): React.JSX.Element => {
-  const offers = useAppSelector(selectOffers);
+  const isAuth = useAppSelector(selectIsAuth);
+  const navigate = useNavigate();
+  const { data: favoriteOffers } = useGetFavoritesQuery();
+
+  useEffect(() => {
+    if (!isAuth) {
+      navigate(AppRoute.Login);
+    }
+  },[isAuth, navigate]);
+
   return (
-    <main className={`page__main page__main--favorites${!offers ? ' page__main--favorites-empty' : ''}`}>
+    <main className={`page__main page__main--favorites${!favoriteOffers ? ' page__main--favorites-empty' : ''}`}>
       <div className="page__favorites-container container">
         {
-          offers ?
+          favoriteOffers ?
             <section className="favorites">
               <h1 className="favorites__title">Saved listing</h1>
-              <FavoritesList offers={offers}/>
+              <FavoritesList offers={favoriteOffers}/>
             </section>
             :
             <section className="favorites favorites--empty">
@@ -20,7 +32,7 @@ const FavoritesPage = (): React.JSX.Element => {
               <div className="favorites__status-wrapper">
                 <b className="favorites__status">Nothing yet saved.</b>
                 <p className="favorites__status-description">Save properties to narrow down search or plan your future
-              trips.
+                    trips.
                 </p>
               </div>
             </section>

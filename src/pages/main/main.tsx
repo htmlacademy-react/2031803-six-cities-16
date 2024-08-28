@@ -1,16 +1,23 @@
-import React, {useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import CardList from '../../components/card-list/card-list.tsx';
 import Map from '../../components/map/map.tsx';
 import CitiesList from '../../components/cities-list/cities-list.tsx';
 import {CITIES} from '../../const.ts';
 import {useAppSelector} from '../../hooks/hooks.ts';
 import {selectCity} from '../../store/reducers/city/city.ts';
-import {selectCityOffers} from '../../store/reducers/offer/offer.ts';
 import SortingForm from '../../components/sorting-list/sorting-form.tsx';
+import {useGetOffersQuery} from '../../store/reducers/api/api.ts';
+import Loader from '../../components/spinner/spinner.tsx';
 
 const MainPage = (): React.JSX.Element => {
-  const cityOffers = useAppSelector(selectCityOffers);
+  const { data: offers, isFetching } = useGetOffersQuery();
   const activeCity = useAppSelector(selectCity);
+  const cityOffers = useMemo(() => {
+    if (offers) {
+      return offers.filter((offer) => offer.city.name === activeCity);
+    }
+    return [];
+  }, [offers, activeCity]);
   const [activeCardID, setActiveCardID] = useState<string | null>(null);
   const handleActiveCardChoice = (id?: string): void => {
     setActiveCardID(id ?? null);
@@ -25,7 +32,7 @@ const MainPage = (): React.JSX.Element => {
         </section>
       </div>
       <div className="cities">
-        {cityOffers.length > 0 ?
+        {cityOffers.length > 0 &&
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
@@ -36,20 +43,22 @@ const MainPage = (): React.JSX.Element => {
               <CardList offers={cityOffers} handleActiveCardChoice={handleActiveCardChoice}/>
             </section>
             <div className="cities__right-section">
-              <Map cityOffers={cityOffers} selectedOfferId={activeCardID}></Map>
+              <Map city={cityOffers[0].city} cityOffers={cityOffers} selectedOfferId={activeCardID}></Map>
             </div>
-          </div>
-          :
+          </div>}
+        {cityOffers.length === 0 && !isFetching &&
           <div className="cities__places-container cities__places-container--empty container">
             <section className="cities__no-places">
               <div className="cities__status-wrapper tabs__content">
                 <b className="cities__status">No places to stay available</b>
-                <p className="cities__status-description">We could not find any property available at the moment in {activeCity}
+                <p className="cities__status-description">We could not find any property available at the moment
+                in {activeCity}
                 </p>
               </div>
             </section>
             <div className="cities__right-section"></div>
           </div>}
+        {isFetching && <Loader/>}
       </div>
     </main>
   );

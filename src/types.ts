@@ -37,7 +37,7 @@ export interface OfferMain {
   previewImage: string;
 }
 
-type OfferDetails = Omit<OfferMain, 'previewImage'> & {
+export type OfferDetailed = Omit<OfferMain, 'previewImage'> & {
   description: string;
   bedrooms: number;
   goods: string[];
@@ -50,12 +50,15 @@ type OfferDetails = Omit<OfferMain, 'previewImage'> & {
   maxAdults: number;
 };
 
-export type OfferMock = OfferMain & OfferDetails;
-
 export interface User {
   name: string;
   avatarUrl: string;
   isPro: boolean;
+}
+
+export type UserAuthResponse = User & {
+  email: string;
+  token: string;
 }
 
 export interface Review {
@@ -68,4 +71,9 @@ export interface Review {
 
 export interface Reviews {
   [offerId: string]: Review[];
+}
+
+export interface LoginFormData {
+  email: string;
+  password: string;
 }

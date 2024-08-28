@@ -1,11 +1,10 @@
-import {OfferMock} from '../../../mocks/types.ts';
-import {createSelector, createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {OfferMain} from '../../../types.ts';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../../store.ts';
-import {selectCity} from '../city/city.ts';
 import {SortOption} from '../../../components/sorting-list/types.ts';
 
 interface State {
-  offers: OfferMock[];
+  offers: OfferMain[];
   sort: SortOption;
 }
 
@@ -18,7 +17,7 @@ const offerSlice = createSlice({
   name: 'offer',
   initialState,
   reducers: {
-    updateOffers(state, action: PayloadAction<OfferMock[]>) {
+    updateOffers(state, action: PayloadAction<OfferMain[]>) {
       state.offers = action.payload;
     },
     toggleOfferFavorite(state, action: PayloadAction<string>) {
@@ -33,7 +32,7 @@ const offerSlice = createSlice({
     }
   }});
 
-const sortOffers = (offers: OfferMock[], sortOption: SortOption): OfferMock[] => {
+const sortOffers = (offers: OfferMain[], sortOption: SortOption): OfferMain[] => {
   switch (sortOption) {
     case SortOption.PriceAsc:
       return [...offers].sort((a, b) => a.price - b.price);
@@ -48,14 +47,8 @@ const sortOffers = (offers: OfferMock[], sortOption: SortOption): OfferMock[] =>
 
 const {actions, reducer} = offerSlice;
 
-export const selectOffers = (state: RootState): OfferMock[] => state.offer.offers;
 export const selectOfferSort = (state: RootState): SortOption => state.offer.sort;
-export const selectCityOffers = createSelector(
-  selectCity,
-  selectOffers,
-  selectOfferSort,
-  (city, offers, sort) => sortOffers(offers.filter((offer) => offer.city.name === city), sort),
-);
+export const selectCityOffers = (state: RootState, offers: OfferMain[]): OfferMain[] => sortOffers(offers.filter((offer) => offer.city.name === state.city.city), state.offer.sort);
 
-export const { updateOffers, toggleOfferFavorite, changeOfferSort } = actions;
+export const { toggleOfferFavorite, changeOfferSort } = actions;
 export default reducer;

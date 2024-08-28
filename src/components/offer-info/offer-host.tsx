@@ -1,5 +1,5 @@
 import React from 'react';
-import {Host} from '../../mocks/types.ts';
+import {Host} from '../../types.ts';
 
 interface OfferHostProps {
   host: Host;

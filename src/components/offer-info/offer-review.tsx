@@ -1,5 +1,5 @@
 import React from 'react';
-import {Review} from '../../mocks/types.ts';
+import {Review} from '../../types.ts';
 
 interface OfferReviewProps {
   review: Review;
@@ -7,6 +7,7 @@ interface OfferReviewProps {
 
 const OfferReview = ({ review }: OfferReviewProps): React.JSX.Element => {
   const { date, comment, user, rating} = review;
+  const formattedDate = new Date(date).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
   return (
     <li className="reviews__item">
       <div className="reviews__user user">
@@ -29,7 +30,7 @@ const OfferReview = ({ review }: OfferReviewProps): React.JSX.Element => {
         <p className="reviews__text">
           {comment}
         </p>
-        <time className="reviews__time" dateTime="2019-04-24">{date}</time>
+        <time className="reviews__time" dateTime="2019-04-24">{formattedDate}</time>
       </div>
     </li>
   );

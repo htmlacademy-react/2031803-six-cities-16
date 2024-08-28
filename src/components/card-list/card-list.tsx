@@ -1,10 +1,10 @@
 import React from 'react';
-import {OfferMock} from '../../mocks/types.ts';
+import {OfferMain} from '../../types.ts';
 import Card from '../card/card.tsx';
 import {CardType} from '../card/types.ts';
 
 interface CardListProps {
-  offers: OfferMock[];
+  offers: OfferMain[];
   cardType?: CardType;
   handleActiveCardChoice?: (id?: string) => void;
 }
