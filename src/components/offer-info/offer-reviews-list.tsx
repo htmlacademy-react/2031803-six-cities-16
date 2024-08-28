@@ -2,15 +2,17 @@ import React from 'react';
 import OfferForm from './offer-form.tsx';
 import OfferReview from './offer-review.tsx';
 import {Review} from '../../types.ts';
-import {useGetAuthStatusQuery, useGetOfferReviewsQuery} from '../../store/reducers/api/api.ts';
+import {useGetOfferReviewsQuery} from '../../store/reducers/api/api.ts';
 import {MAX_VISIBLE_REVIEWS_PER_PAGE} from '../../const.ts';
+import {useAppSelector} from '../../hooks/hooks.ts';
+import {selectIsAuth} from '../../store/reducers/auth/auth.ts';
 
 interface OfferReviewsListProps {
   offerID: string;
 }
 
 const OfferReviewsList = ({ offerID }: OfferReviewsListProps): React.JSX.Element => {
-  const { data: userAuth } = useGetAuthStatusQuery();
+  const userAuth = useAppSelector(selectIsAuth);
   const { data: reviews } = useGetOfferReviewsQuery(offerID);
   return (
     <section className="offer__reviews reviews">

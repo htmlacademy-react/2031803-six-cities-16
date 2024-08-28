@@ -4,7 +4,7 @@ import {LoginFormData} from '../../types.ts';
 import {useNavigate} from 'react-router-dom';
 import {AppRoute} from '../../components/app/types.ts';
 import {useAppDispatch} from '../../hooks/hooks.ts';
-import {setAccessToken} from '../../store/reducers/auth/auth.ts';
+import {setAccessToken, setIsAuth} from '../../store/reducers/auth/auth.ts';
 
 const LoginPage = (): React.JSX.Element => {
   const { refetch: refetchAuthStatus } = useGetAuthStatusQuery();
@@ -33,7 +33,7 @@ const LoginPage = (): React.JSX.Element => {
     if (token) {
       localStorage.setItem('six-cities-token', token);
       dispatch(setAccessToken(token));
-      refetchAuthStatus();
+      refetchAuthStatus().then((response) => response.isSuccess && dispatch(setIsAuth(true)));
       navigate(AppRoute.Index);
     }
     form.reset();

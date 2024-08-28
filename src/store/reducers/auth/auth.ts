@@ -3,10 +3,12 @@ import {RootState} from '../../store.ts';
 
 interface State {
   accessToken: string | null;
+  isAuth: boolean;
 }
 
 const initialState: State = {
-  accessToken: localStorage.getItem('six-cities-token') ?? null
+  accessToken: localStorage.getItem('six-cities-token') ?? null,
+  isAuth: false
 };
 
 const authSlice = createSlice({
@@ -15,6 +17,9 @@ const authSlice = createSlice({
   reducers: {
     setAccessToken(state, action: PayloadAction<string | null>) {
       state.accessToken = action.payload;
+    },
+    setIsAuth(state, action: PayloadAction<boolean>) {
+      state.isAuth = action.payload;
     }
   }
 });
@@ -22,6 +27,7 @@ const authSlice = createSlice({
 const {actions, reducer} = authSlice;
 
 export const selectAccessToken = (state: RootState): string | null => state.auth.accessToken;
+export const selectIsAuth = (state: RootState): boolean => state.auth.isAuth;
 
-export const { setAccessToken } = actions;
+export const { setAccessToken, setIsAuth } = actions;
 export default reducer;

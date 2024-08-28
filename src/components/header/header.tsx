@@ -2,22 +2,23 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import {AppRoute} from '../app/types.ts';
 import {useGetAuthStatusQuery, useGetFavoritesQuery, useMakeLogoutMutation} from '../../store/reducers/api/api.ts';
-import {useAppDispatch} from '../../hooks/hooks.ts';
-import {setAccessToken} from '../../store/reducers/auth/auth.ts';
+import {useAppDispatch, useAppSelector} from '../../hooks/hooks.ts';
+import {selectIsAuth, setAccessToken, setIsAuth} from '../../store/reducers/auth/auth.ts';
 
 interface HeaderProps {
   isLoginPage?: boolean;
 }
 
 const Header = ({isLoginPage}: HeaderProps): React.JSX.Element => {
-  const { data: userAuth, refetch: refetchAuthStatus, isError } = useGetAuthStatusQuery();
+  const { refetch: refetchAuthStatus} = useGetAuthStatusQuery();
   const { data: favoriteOffers } = useGetFavoritesQuery();
   const [makeLogout] = useMakeLogoutMutation();
   const dispatch = useAppDispatch();
+  const userAuth = useAppSelector(selectIsAuth);
 
   const handleLogout = (evt: React.MouseEvent<HTMLAnchorElement, MouseEvent>): void => {
     evt.preventDefault();
-    makeLogout().unwrap().then(() => refetchAuthStatus());
+    makeLogout().unwrap().then(() => refetchAuthStatus().then((response) => response.isError && dispatch(setIsAuth(false))));
     localStorage.removeItem('six-cities-token');
     dispatch(setAccessToken(null));
   };
@@ -33,7 +34,7 @@ const Header = ({isLoginPage}: HeaderProps): React.JSX.Element => {
           {!isLoginPage &&
           <nav className="header__nav">
             <ul className="header__nav-list">
-              {userAuth && !isError &&
+              {userAuth &&
                 <>
                   <li className="header__nav-item user">
                     <Link className="header__nav-link header__nav-link--profile" to={AppRoute.Favorites}>
@@ -49,7 +50,7 @@ const Header = ({isLoginPage}: HeaderProps): React.JSX.Element => {
                     </a>
                   </li>
                 </>}
-              { isError &&
+              { !userAuth &&
                 <li className="header__nav-item user">
                   <Link to={AppRoute.Login} className="header__nav-link header__nav-link--profile">
                     <div className="header__avatar-wrapper user__avatar-wrapper">
