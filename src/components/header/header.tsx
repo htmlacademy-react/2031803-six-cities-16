@@ -4,6 +4,7 @@ import {AppRoute} from '../app/types.ts';
 import {useGetAuthStatusQuery, useGetFavoritesQuery, useMakeLogoutMutation} from '../../store/reducers/api/api.ts';
 import {useAppDispatch, useAppSelector} from '../../hooks/hooks.ts';
 import {selectIsAuth, setAccessToken, setIsAuth} from '../../store/reducers/auth/auth.ts';
+import {LOCAL_STORAGE_TOKEN_HEADER} from '../../const.ts';
 
 interface HeaderProps {
   isLoginPage?: boolean;
@@ -16,10 +17,9 @@ const Header = ({isLoginPage}: HeaderProps): React.JSX.Element => {
   const dispatch = useAppDispatch();
   const userAuth = useAppSelector(selectIsAuth);
 
-  const handleLogout = (evt: React.MouseEvent<HTMLAnchorElement, MouseEvent>): void => {
-    evt.preventDefault();
+  const handleLogout = (): void => {
     makeLogout().unwrap().then(() => refetchAuthStatus().then((response) => response.isError && dispatch(setIsAuth(false))));
-    localStorage.removeItem('six-cities-token');
+    localStorage.removeItem(LOCAL_STORAGE_TOKEN_HEADER);
     dispatch(setAccessToken(null));
   };
   return (
@@ -41,13 +41,13 @@ const Header = ({isLoginPage}: HeaderProps): React.JSX.Element => {
                       <div className="header__avatar-wrapper user__avatar-wrapper">
                       </div>
                       <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                      <span className="header__favorite-count">{favoriteOffers?.length ?? 0}</span>
+                      <span className="header__favorite-count">{favoriteOffers ? favoriteOffers.length : ''}</span>
                     </Link>
                   </li>
                   <li className="header__nav-item">
-                    <a className="header__nav-link" href="#" onClick={handleLogout}>
+                    <Link className="header__nav-link" to='#' onClick={handleLogout}>
                       <span className="header__signout">Sign out</span>
-                    </a>
+                    </Link>
                   </li>
                 </>}
               { !userAuth &&

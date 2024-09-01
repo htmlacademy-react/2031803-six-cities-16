@@ -8,20 +8,26 @@ import {selectCity} from '../../store/reducers/city/city.ts';
 import SortingForm from '../../components/sorting-list/sorting-form.tsx';
 import {useGetOffersQuery} from '../../store/reducers/api/api.ts';
 import Loader from '../../components/spinner/spinner.tsx';
+import {selectOfferSort, sortOffers} from '../../store/reducers/offer/offer.ts';
 
 const MainPage = (): React.JSX.Element => {
-  const { data: offers, isFetching } = useGetOffersQuery();
+  const { data: offers, isLoading } = useGetOffersQuery();
   const activeCity = useAppSelector(selectCity);
+  const activeSort = useAppSelector(selectOfferSort);
   const cityOffers = useMemo(() => {
     if (offers) {
-      return offers.filter((offer) => offer.city.name === activeCity);
+      return sortOffers(offers.filter((offer) => offer.city.name === activeCity), activeSort);
     }
     return [];
-  }, [offers, activeCity]);
+  }, [offers, activeSort, activeCity]);
   const [activeCardID, setActiveCardID] = useState<string | null>(null);
   const handleActiveCardChoice = (id?: string): void => {
     setActiveCardID(id ?? null);
   };
+
+  if (isLoading) {
+    return <Loader/>;
+  }
 
   return (
     <main className={`page__main page__main--index${cityOffers.length > 0 ? '' : ' page__main--index-empty'}`}>
@@ -46,7 +52,7 @@ const MainPage = (): React.JSX.Element => {
               <Map city={cityOffers[0].city} cityOffers={cityOffers} selectedOfferId={activeCardID}></Map>
             </div>
           </div>}
-        {cityOffers.length === 0 && !isFetching &&
+        {cityOffers.length === 0 &&
           <div className="cities__places-container cities__places-container--empty container">
             <section className="cities__no-places">
               <div className="cities__status-wrapper tabs__content">
@@ -58,7 +64,6 @@ const MainPage = (): React.JSX.Element => {
             </section>
             <div className="cities__right-section"></div>
           </div>}
-        {isFetching && <Loader/>}
       </div>
     </main>
   );

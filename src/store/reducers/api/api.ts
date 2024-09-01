@@ -1,11 +1,24 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import {LoginFormData, OfferDetailed, OfferMain, Review, UserAuthResponse} from '../../../types.ts';
+import {
+  HTTPMethod,
+  LoginFormData,
+  OfferDetailed,
+  OfferMain,
+  Review,
+  ReviewPostRequest,
+  UserAuthResponse
+} from '../../../types.ts';
 import {RootState} from '../../store.ts';
 import {selectAccessToken} from '../auth/auth.ts';
 
 interface makeOfferFavoriteArgs {
   id: string;
-  isFavorite: boolean;
+  favoriteStatus: number;
+}
+
+interface makeReviewArgs {
+  id: string;
+  body: ReviewPostRequest;
 }
 
 export const apiSlice = createApi({
@@ -23,51 +36,67 @@ export const apiSlice = createApi({
         return headers;
       },
     }),
+  tagTypes: ['Offers', 'Comments'],
   endpoints: (builder) => ({
     getOffers: builder.query<OfferMain[], void>({
-      query: () => '/offers'
+      query: () => '/offers',
+      providesTags: ['Offers']
     }),
     getOffersNearby: builder.query<OfferMain[], string>({
-      query: (id: string) => `/offers/${id}/nearby`
+      query: (id: string) => `/offers/${id}/nearby`,
+      providesTags: ['Offers']
     }),
     getOffer: builder.query<OfferDetailed, string>({
-      query: (id: string) => `/offers/${id}`
+      query: (id: string) => `/offers/${id}`,
+      providesTags: ['Offers']
     }),
     getOfferReviews: builder.query<Review[], string>({
-      query: (id: string) => `/comments/${id}`
+      query: (id: string) => `/comments/${id}`,
+      providesTags: ['Comments']
     }),
     getFavorites: builder.query<OfferMain[], void>({
-      query: () => '/favorites'
+      query: () => '/favorite',
+      providesTags: ['Offers']
     }),
     getAuthStatus: builder.query<UserAuthResponse, void>({
       query: () => '/login'
     }),
     changeOfferFavorite: builder.mutation<void, makeOfferFavoriteArgs>({
-      query: ({ id, isFavorite }: makeOfferFavoriteArgs)=> ({
-        url: `favorite/${id}${isFavorite}`,
-        method: 'POST',
+      query: ({ id, favoriteStatus }: makeOfferFavoriteArgs)=> ({
+        url: `favorite/${id}${favoriteStatus}`,
+        method: HTTPMethod.Post,
       })
     }),
     makeOfferFavorite: builder.mutation<void, makeOfferFavoriteArgs>({
-      query: ({ id, isFavorite }: makeOfferFavoriteArgs)=> ({
-        url: `favorite/${id}${isFavorite}`,
-        method: 'POST',
-      })
+      query: ({ id, favoriteStatus }: makeOfferFavoriteArgs)=> ({
+        url: `favorite/${id}/${favoriteStatus}`,
+        method: HTTPMethod.Post,
+      }),
+      invalidatesTags: ['Offers']
     }),
     makeAuth: builder.mutation<UserAuthResponse, LoginFormData>({
       query: (body)=> ({
         url: 'login',
-        method: 'POST',
+        method: HTTPMethod.Post,
         body
       })
     }),
     makeLogout: builder.mutation<void, void>({
       query: ()=> ({
         url: 'logout',
-        method: 'DELETE',
+        method: HTTPMethod.Delete,
       })
     }),
-  })
+    makeReview: builder.mutation<string, makeReviewArgs>(
+      {
+        query: ({ id, body}) => ({
+          url: `/comments/${id}`,
+          method: HTTPMethod.Post,
+          body
+        }),
+        invalidatesTags: ['Comments']
+      }
+    )})
 });
 
 export const {
@@ -78,5 +107,7 @@ export const {
   useGetFavoritesQuery,
   useGetAuthStatusQuery,
   useMakeAuthMutation,
-  useMakeLogoutMutation
+  useMakeLogoutMutation,
+  useMakeOfferFavoriteMutation,
+  useMakeReviewMutation
 } = apiSlice;

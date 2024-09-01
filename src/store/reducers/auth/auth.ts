@@ -1,5 +1,6 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {RootState} from '../../store.ts';
+import {LOCAL_STORAGE_TOKEN_HEADER} from '../../../const.ts';
 
 interface State {
   accessToken: string | null;
@@ -7,8 +8,8 @@ interface State {
 }
 
 const initialState: State = {
-  accessToken: localStorage.getItem('six-cities-token') ?? null,
-  isAuth: false
+  accessToken: localStorage.getItem(LOCAL_STORAGE_TOKEN_HEADER) ?? null,
+  isAuth: false,
 };
 
 const authSlice = createSlice({

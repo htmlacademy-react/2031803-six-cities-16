@@ -11,11 +11,23 @@ import Error404 from './pages/error404/error404.tsx';
 import LoginPage from './pages/login/login.tsx';
 import {Provider} from 'react-redux';
 import {store} from './store/store.ts';
+import {apiSlice} from './store/reducers/api/api.ts';
+import {setIsAuth} from './store/reducers/auth/auth.ts';
 
 const router =
   createBrowserRouter(
     createRoutesFromElements(
-      <Route element={<App/>}>
+      <Route element={<App/>} loader={async (): Promise<null> => {
+        try {
+          await store.dispatch(apiSlice.endpoints.getAuthStatus.initiate()).unwrap();
+          store.dispatch(setIsAuth(true));
+
+        } catch {
+          store.dispatch(setIsAuth(false));
+        }
+        return null;
+      }}
+      >
         <Route path={AppRoute.Index} element={<Layout isMainPage/>}>
           <Route index element={<MainPage/>}></Route>
         </Route>

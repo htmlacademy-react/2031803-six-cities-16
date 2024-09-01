@@ -10,3 +10,4 @@ export const URL_MARKER_DEFAULT = pin;
 export const URL_MARKER_CURRENT = activePin;
 export const SORT_OPTIONS: SortOption[] = [SortOption.Popular, SortOption.PriceAsc, SortOption.PriceDesc, SortOption.TopRated];
 export const MAX_VISIBLE_REVIEWS_PER_PAGE = 10;
+export const LOCAL_STORAGE_TOKEN_HEADER = 'six-cities-token';
