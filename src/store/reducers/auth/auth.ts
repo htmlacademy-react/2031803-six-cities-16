@@ -9,7 +9,7 @@ interface State {
 
 const initialState: State = {
   accessToken: localStorage.getItem(LOCAL_STORAGE_TOKEN_HEADER) ?? null,
-  isAuth: Boolean(localStorage.getItem(LOCAL_STORAGE_TOKEN_HEADER)),
+  isAuth: false,
 };
 
 const authSlice = createSlice({

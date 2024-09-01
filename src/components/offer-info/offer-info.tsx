@@ -9,6 +9,8 @@ import {MAX_IMAGES_ON_OFFER_PAGE, MAX_SHOWN_OFFERS_NEARBY} from '../../const.ts'
 import {useGetOfferQuery, useGetOffersNearbyQuery, useMakeOfferFavoriteMutation} from '../../store/reducers/api/api.ts';
 import {useNavigate} from 'react-router-dom';
 import {AppRoute} from '../app/types.ts';
+import {useAppSelector} from '../../hooks/hooks.ts';
+import {selectIsAuth} from '../../store/reducers/auth/auth.ts';
 
 interface OfferInfoProps {
   offerID: string;
@@ -16,12 +18,16 @@ interface OfferInfoProps {
 
 const OfferInfo = ({ offerID }: OfferInfoProps): React.JSX.Element | null => {
   const navigate = useNavigate();
+  const isAuth = useAppSelector(selectIsAuth);
   const {data: currentOffer, isLoading } = useGetOfferQuery(offerID);
   const {data: offersNearby} = useGetOffersNearbyQuery(offerID);
   const offersNearbyVisible = offersNearby?.slice(0, MAX_SHOWN_OFFERS_NEARBY) ?? [];
   const [makeOfferFavorite] = useMakeOfferFavoriteMutation();
 
   const handleFavoriteButtonClick = (): void => {
+    if (!isAuth) {
+      navigate(AppRoute.Login);
+    }
     if (currentOffer) {
       const { id, isFavorite } = currentOffer;
       makeOfferFavorite({ id, favoriteStatus: Number(!isFavorite)});
