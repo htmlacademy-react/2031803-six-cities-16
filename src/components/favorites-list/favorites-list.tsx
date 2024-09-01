@@ -3,7 +3,7 @@ import {OfferMain} from '../../types.ts';
 import {v4 as uuidv4} from 'uuid';
 import Card from '../card/card.tsx';
 import {CardType} from '../card/types.ts';
-import {Link} from "react-router-dom";
+import {Link} from 'react-router-dom';
 
 interface FavoritesListProps {
   offers: OfferMain[];

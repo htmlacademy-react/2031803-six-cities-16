@@ -3,7 +3,7 @@ import {City} from '../../types.ts';
 import {v4 as uuidv4} from 'uuid';
 import {selectCity, changeCity} from '../../store/reducers/city/city.ts';
 import {useAppDispatch, useAppSelector} from '../../hooks/hooks.ts';
-import {Link} from "react-router-dom";
+import {Link} from 'react-router-dom';
 
 interface CitiesListProps {
   cities: City[];

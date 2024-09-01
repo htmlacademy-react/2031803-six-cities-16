@@ -8,7 +8,7 @@ interface State {
 
 const initialState: State = {
   accessToken: localStorage.getItem('six-cities-token') ?? null,
-  isAuth: false
+  isAuth: Boolean(localStorage.getItem('six-cities-token')),
 };
 
 const authSlice = createSlice({
