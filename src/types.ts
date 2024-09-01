@@ -69,11 +69,14 @@ export interface Review {
   rating: number;
 }
 
-export interface Reviews {
-  [offerId: string]: Review[];
-}
+export type ReviewPostRequest = Pick<Review, 'comment' | 'rating'>
 
 export interface LoginFormData {
   email: string;
   password: string;
+}
+
+export enum HTTPMethod {
+  Post = 'POST',
+  Delete = 'DELETE'
 }

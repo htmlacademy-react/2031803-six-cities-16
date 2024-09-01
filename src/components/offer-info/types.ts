@@ -1,6 +1,7 @@
 export enum ErrorMessage {
   Review = 'The review text must contain from 50 to 300 characters.',
   Rating = 'The rating must be chosen',
+  Server = 'A server error occured. Please try again later',
   NoError = ''
 }
 

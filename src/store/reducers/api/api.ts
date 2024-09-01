@@ -1,11 +1,24 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import {LoginFormData, OfferDetailed, OfferMain, Review, UserAuthResponse} from '../../../types.ts';
+import {
+  HTTPMethod,
+  LoginFormData,
+  OfferDetailed,
+  OfferMain,
+  Review,
+  ReviewPostRequest,
+  UserAuthResponse
+} from '../../../types.ts';
 import {RootState} from '../../store.ts';
 import {selectAccessToken} from '../auth/auth.ts';
 
 interface makeOfferFavoriteArgs {
   id: string;
   favoriteStatus: number;
+}
+
+interface makeReviewArgs {
+  id: string;
+  body: ReviewPostRequest;
 }
 
 export const apiSlice = createApi({
@@ -23,7 +36,7 @@ export const apiSlice = createApi({
         return headers;
       },
     }),
-  tagTypes: ['Offers'],
+  tagTypes: ['Offers', 'Comments'],
   endpoints: (builder) => ({
     getOffers: builder.query<OfferMain[], void>({
       query: () => '/offers',
@@ -38,7 +51,8 @@ export const apiSlice = createApi({
       providesTags: ['Offers']
     }),
     getOfferReviews: builder.query<Review[], string>({
-      query: (id: string) => `/comments/${id}`
+      query: (id: string) => `/comments/${id}`,
+      providesTags: ['Comments']
     }),
     getFavorites: builder.query<OfferMain[], void>({
       query: () => '/favorite',
@@ -50,30 +64,39 @@ export const apiSlice = createApi({
     changeOfferFavorite: builder.mutation<void, makeOfferFavoriteArgs>({
       query: ({ id, favoriteStatus }: makeOfferFavoriteArgs)=> ({
         url: `favorite/${id}${favoriteStatus}`,
-        method: 'POST',
+        method: HTTPMethod.Post,
       })
     }),
     makeOfferFavorite: builder.mutation<void, makeOfferFavoriteArgs>({
       query: ({ id, favoriteStatus }: makeOfferFavoriteArgs)=> ({
         url: `favorite/${id}/${favoriteStatus}`,
-        method: 'POST',
+        method: HTTPMethod.Post,
       }),
       invalidatesTags: ['Offers']
     }),
     makeAuth: builder.mutation<UserAuthResponse, LoginFormData>({
       query: (body)=> ({
         url: 'login',
-        method: 'POST',
+        method: HTTPMethod.Post,
         body
       })
     }),
     makeLogout: builder.mutation<void, void>({
       query: ()=> ({
         url: 'logout',
-        method: 'DELETE',
+        method: HTTPMethod.Delete,
       })
     }),
-  })
+    makeReview: builder.mutation<string, makeReviewArgs>(
+      {
+        query: ({ id, body}) => ({
+          url: `/comments/${id}`,
+          method: HTTPMethod.Post,
+          body
+        }),
+        invalidatesTags: ['Comments']
+      }
+    )})
 });
 
 export const {
@@ -85,5 +108,6 @@ export const {
   useGetAuthStatusQuery,
   useMakeAuthMutation,
   useMakeLogoutMutation,
-  useMakeOfferFavoriteMutation
+  useMakeOfferFavoriteMutation,
+  useMakeReviewMutation
 } = apiSlice;

@@ -24,7 +24,7 @@ const OfferReviewsList = ({ offerID }: OfferReviewsListProps): React.JSX.Element
             .slice(0, MAX_VISIBLE_REVIEWS_PER_PAGE)
             .map((review: Review) => <OfferReview review={review} key={review.id}/>)}
         </ul>}
-      {userAuth && <OfferForm/>}
+      {userAuth && <OfferForm offerId={offerID}/>}
     </section>
   );
 };
