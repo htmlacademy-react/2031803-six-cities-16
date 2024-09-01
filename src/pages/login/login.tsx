@@ -1,15 +1,16 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useGetAuthStatusQuery, useMakeAuthMutation} from '../../store/reducers/api/api.ts';
 import {LoginFormData} from '../../types.ts';
 import {Link, useNavigate} from 'react-router-dom';
 import {AppRoute} from '../../components/app/types.ts';
-import {useAppDispatch} from '../../hooks/hooks.ts';
-import {setAccessToken, setIsAuth} from '../../store/reducers/auth/auth.ts';
+import {useAppDispatch, useAppSelector} from '../../hooks/hooks.ts';
+import {selectIsAuth, setAccessToken, setIsAuth} from '../../store/reducers/auth/auth.ts';
 import {LOCAL_STORAGE_TOKEN_HEADER} from '../../const.ts';
 
 const LoginPage = (): React.JSX.Element => {
   const { refetch: refetchAuthStatus } = useGetAuthStatusQuery();
   const [makeAuth] = useMakeAuthMutation();
+  const isAuth = useAppSelector(selectIsAuth);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
@@ -39,6 +40,12 @@ const LoginPage = (): React.JSX.Element => {
     }
     form.reset();
   };
+
+  useEffect(() => {
+    if (isAuth) {
+      navigate(AppRoute.Index);
+    }
+  }, [isAuth, navigate]);
 
   return (
     <main className="page__main page__main--login">
