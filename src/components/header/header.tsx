@@ -4,6 +4,7 @@ import {AppRoute} from '../app/types.ts';
 import {useGetAuthStatusQuery, useGetFavoritesQuery, useMakeLogoutMutation} from '../../store/reducers/api/api.ts';
 import {useAppDispatch, useAppSelector} from '../../hooks/hooks.ts';
 import {selectIsAuth, setAccessToken, setIsAuth} from '../../store/reducers/auth/auth.ts';
+import {LOCAL_STORAGE_TOKEN_HEADER} from '../../const.ts';
 
 interface HeaderProps {
   isLoginPage?: boolean;
@@ -18,7 +19,7 @@ const Header = ({isLoginPage}: HeaderProps): React.JSX.Element => {
 
   const handleLogout = (): void => {
     makeLogout().unwrap().then(() => refetchAuthStatus().then((response) => response.isError && dispatch(setIsAuth(false))));
-    localStorage.removeItem('six-cities-token');
+    localStorage.removeItem(LOCAL_STORAGE_TOKEN_HEADER);
     dispatch(setAccessToken(null));
   };
   return (
