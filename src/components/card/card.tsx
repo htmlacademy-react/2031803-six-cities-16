@@ -1,15 +1,14 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import {CardProps, CardType} from './types.ts';
-import { toggleOfferFavorite } from '../../store/reducers/offer/offer.ts';
-import {useAppDispatch} from '../../hooks/hooks.ts';
+import {useMakeOfferFavoriteMutation} from '../../store/reducers/api/api.ts';
 
 const Card = ({ offer, cardType, handleActiveCardChoice }: CardProps): React.JSX.Element => {
   const { isPremium, previewImage, price, title, type, isFavorite, rating, id } = offer;
-  const dispatch = useAppDispatch();
+  const [makeOfferFavorite] = useMakeOfferFavoriteMutation();
 
   const handleFavoriteButtonClick = (): void => {
-    dispatch(toggleOfferFavorite(id));
+    makeOfferFavorite({ id, favoriteStatus: Number(!isFavorite)});
   };
 
   return (

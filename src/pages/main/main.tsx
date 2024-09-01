@@ -11,7 +11,7 @@ import Loader from '../../components/spinner/spinner.tsx';
 import {selectOfferSort, sortOffers} from '../../store/reducers/offer/offer.ts';
 
 const MainPage = (): React.JSX.Element => {
-  const { data: offers, isFetching } = useGetOffersQuery();
+  const { data: offers, isLoading } = useGetOffersQuery();
   const activeCity = useAppSelector(selectCity);
   const activeSort = useAppSelector(selectOfferSort);
   const cityOffers = useMemo(() => {
@@ -25,7 +25,7 @@ const MainPage = (): React.JSX.Element => {
     setActiveCardID(id ?? null);
   };
 
-  if (isFetching) {
+  if (isLoading) {
     return <Loader/>;
   }
 

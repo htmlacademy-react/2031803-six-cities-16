@@ -5,7 +5,7 @@ import {selectAccessToken} from '../auth/auth.ts';
 
 interface makeOfferFavoriteArgs {
   id: string;
-  isFavorite: boolean;
+  favoriteStatus: number;
 }
 
 export const apiSlice = createApi({
@@ -23,36 +23,42 @@ export const apiSlice = createApi({
         return headers;
       },
     }),
+  tagTypes: ['Offers'],
   endpoints: (builder) => ({
     getOffers: builder.query<OfferMain[], void>({
-      query: () => '/offers'
+      query: () => '/offers',
+      providesTags: ['Offers']
     }),
     getOffersNearby: builder.query<OfferMain[], string>({
-      query: (id: string) => `/offers/${id}/nearby`
+      query: (id: string) => `/offers/${id}/nearby`,
+      providesTags: ['Offers']
     }),
     getOffer: builder.query<OfferDetailed, string>({
-      query: (id: string) => `/offers/${id}`
+      query: (id: string) => `/offers/${id}`,
+      providesTags: ['Offers']
     }),
     getOfferReviews: builder.query<Review[], string>({
       query: (id: string) => `/comments/${id}`
     }),
     getFavorites: builder.query<OfferMain[], void>({
-      query: () => '/favorites'
+      query: () => '/favorite',
+      providesTags: ['Offers']
     }),
     getAuthStatus: builder.query<UserAuthResponse, void>({
       query: () => '/login'
     }),
     changeOfferFavorite: builder.mutation<void, makeOfferFavoriteArgs>({
-      query: ({ id, isFavorite }: makeOfferFavoriteArgs)=> ({
-        url: `favorite/${id}${isFavorite}`,
+      query: ({ id, favoriteStatus }: makeOfferFavoriteArgs)=> ({
+        url: `favorite/${id}${favoriteStatus}`,
         method: 'POST',
       })
     }),
     makeOfferFavorite: builder.mutation<void, makeOfferFavoriteArgs>({
-      query: ({ id, isFavorite }: makeOfferFavoriteArgs)=> ({
-        url: `favorite/${id}${isFavorite}`,
+      query: ({ id, favoriteStatus }: makeOfferFavoriteArgs)=> ({
+        url: `favorite/${id}/${favoriteStatus}`,
         method: 'POST',
-      })
+      }),
+      invalidatesTags: ['Offers']
     }),
     makeAuth: builder.mutation<UserAuthResponse, LoginFormData>({
       query: (body)=> ({
@@ -78,5 +84,6 @@ export const {
   useGetFavoritesQuery,
   useGetAuthStatusQuery,
   useMakeAuthMutation,
-  useMakeLogoutMutation
+  useMakeLogoutMutation,
+  useMakeOfferFavoriteMutation
 } = apiSlice;

@@ -17,16 +17,6 @@ const offerSlice = createSlice({
   name: 'offer',
   initialState,
   reducers: {
-    updateOffers(state, action: PayloadAction<OfferMain[]>) {
-      state.offers = action.payload;
-    },
-    toggleOfferFavorite(state, action: PayloadAction<string>) {
-      const offerID = action.payload;
-      const index = state.offers.findIndex((offer) => offer.id === offerID);
-      if (index !== -1) {
-        state.offers[index].isFavorite = !state.offers[index].isFavorite;
-      }
-    },
     changeOfferSort(state, action: PayloadAction<SortOption>) {
       state.sort = action.payload;
     }
@@ -48,5 +38,5 @@ export const sortOffers = (offers: OfferMain[], sortOption: SortOption): OfferMa
 const {actions, reducer} = offerSlice;
 
 export const selectOfferSort = (state: RootState): SortOption => state.offer.sort;
-export const { toggleOfferFavorite, changeOfferSort } = actions;
+export const { changeOfferSort } = actions;
 export default reducer;
