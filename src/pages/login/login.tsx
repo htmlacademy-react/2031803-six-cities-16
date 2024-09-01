@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {useGetAuthStatusQuery, useMakeAuthMutation} from '../../store/reducers/api/api.ts';
 import {LoginFormData} from '../../types.ts';
-import {useNavigate} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import {AppRoute} from '../../components/app/types.ts';
 import {useAppDispatch} from '../../hooks/hooks.ts';
 import {setAccessToken, setIsAuth} from '../../store/reducers/auth/auth.ts';
@@ -60,9 +60,9 @@ const LoginPage = (): React.JSX.Element => {
         </section>
         <section className="locations locations--login locations--current">
           <div className="locations__item">
-            <a className="locations__item-link" href="#">
+            <Link className="locations__item-link" to="#">
               <span>Amsterdam</span>
-            </a>
+            </Link>
           </div>
         </section>
       </div>

@@ -16,8 +16,7 @@ const Header = ({isLoginPage}: HeaderProps): React.JSX.Element => {
   const dispatch = useAppDispatch();
   const userAuth = useAppSelector(selectIsAuth);
 
-  const handleLogout = (evt: React.MouseEvent<HTMLAnchorElement, MouseEvent>): void => {
-    evt.preventDefault();
+  const handleLogout = (): void => {
     makeLogout().unwrap().then(() => refetchAuthStatus().then((response) => response.isError && dispatch(setIsAuth(false))));
     localStorage.removeItem('six-cities-token');
     dispatch(setAccessToken(null));
@@ -45,9 +44,9 @@ const Header = ({isLoginPage}: HeaderProps): React.JSX.Element => {
                     </Link>
                   </li>
                   <li className="header__nav-item">
-                    <a className="header__nav-link" href="#" onClick={handleLogout}>
+                    <Link className="header__nav-link" to='#' onClick={handleLogout}>
                       <span className="header__signout">Sign out</span>
-                    </a>
+                    </Link>
                   </li>
                 </>}
               { !userAuth &&

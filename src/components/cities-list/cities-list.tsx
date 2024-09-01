@@ -3,6 +3,7 @@ import {City} from '../../types.ts';
 import {v4 as uuidv4} from 'uuid';
 import {selectCity, changeCity} from '../../store/reducers/city/city.ts';
 import {useAppDispatch, useAppSelector} from '../../hooks/hooks.ts';
+import {Link} from "react-router-dom";
 
 interface CitiesListProps {
   cities: City[];
@@ -20,13 +21,13 @@ const CitiesList = ({ cities }: CitiesListProps): React.JSX.Element => {
     <ul className="locations__list tabs__list">
       {cities.map((city) => (
         <li className="locations__item" key={uuidv4()}>
-          <a className={`locations__item-link tabs__item ${city === activeCity ? 'tabs__item--active' : ''}`}
+          <Link to="#" className={`locations__item-link tabs__item ${city === activeCity ? 'tabs__item--active' : ''}`}
             onClick={() => {
               handleCityClick(city);
             }}
           >
             <span>{city}</span>
-          </a>
+          </Link>
         </li>
       ))}
     </ul>

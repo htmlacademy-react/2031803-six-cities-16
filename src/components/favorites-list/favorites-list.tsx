@@ -3,6 +3,7 @@ import {OfferMain} from '../../types.ts';
 import {v4 as uuidv4} from 'uuid';
 import Card from '../card/card.tsx';
 import {CardType} from '../card/types.ts';
+import {Link} from "react-router-dom";
 
 interface FavoritesListProps {
   offers: OfferMain[];
@@ -17,9 +18,9 @@ const FavoritesList = ({ offers }: FavoritesListProps): React.JSX.Element => {
           <li key={uuidv4()} className="favorites__locations-items">
             <div className="favorites__locations locations locations--current">
               <div className="locations__item">
-                <a className="locations__item-link" href="#">
+                <Link className="locations__item-link" to="#">
                   <span>{city}</span>
-                </a>
+                </Link>
               </div>
             </div>
             <div className="favorites__places">
